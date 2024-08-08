@@ -14,7 +14,7 @@ import ProductsSingleView from "../ProductsSingleView/ProductsSingleView";
 
 const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedPriceAscDesc, setSelectedPriceAscDesc] = useState("");
+  const [selectedPriceAscDesc, setselectedPriceAscDesc] = useState("");
   const [searchText, setSearchText] = useState("");
   const [products, setProducts] = useState("");
   const [displayedProducts, setDisplayedProducts] = useState([]);
@@ -80,15 +80,43 @@ const Products = () => {
     );
     setDisplayedProducts(sortedProducts);
   };
-  const handleReset = () => {
-    setSearchText("");
-    setSelectedCategory("");
-    setSelectedPriceAscDesc("");
-    setDisplayedProducts(productsData?.data || []); // Reset to initial product list
-  };
+  // const { data: PriceRange } = useGetPriceRangeProductsQuery(undefined);
+  // const { data: Category } = useGetCategoriesProductsQuery(undefined);
+  // const { data: Sort } = useGetSortProductsQuery(undefined);
+
+  // const Products = data.data;
+  // console.log("Products,", data.data);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading products</div>;
+
+  // const handleSearch = (event) => {
+  //   event.preventDefault();
+  //   const form = event.target;
+  //   const SearchText = form.SearchText.value;
+  //   setSearchText(SearchText);
+  //   console.log("Search Value:", SearchText);
+  //   // Perform your search logic here
+  // };
+  // const handleSortByPriceRange = (event) => {
+  //   event.preventDefault();
+  //   const form = event.target;
+  //   const MinPrice = form.MinPrice.value;
+  //   const MaxPrice = form.MaxPrice.value;
+  //   console.log("Search Value:", MinPrice, MaxPrice);
+  //   // Perform your search logic here
+  // };
+
+  // const handleSelectChangeCategory = (event) => {
+  //   const selectedValue = event.target.value;
+  //   setSelectedCategory(selectedValue);
+  //   console.log("Selected Category:", selectedValue);
+  // };
+  // const handleSelectChangePriceAscDesc = (event) => {
+  //   const selectedValue = event.target.value;
+  //   setselectedPriceAscDesc(selectedValue);
+  //   console.log("Selected Category:", selectedValue);
+  // };
 
   console.log("Selected :", selectedCategory);
   console.log("Selected :", selectedPriceAscDesc);
@@ -236,7 +264,7 @@ const Products = () => {
                 <option disabled selected>
                   Select Category
                 </option>
-                <option value="camper1">Han Solo</option>
+                <option value="abc">Han Solo</option>
                 <option>Greedo</option>
               </select>
             </ul>
@@ -258,20 +286,17 @@ const Products = () => {
             >
               <select
                 onChange={handleSelectChangePriceAscDesc}
-                className="select select-bordered w-full bg-[#1A4870]"
+                className="select select-bordered w-full  bg-[#1A4870] "
               >
                 <option disabled>Select Option</option>
-                <option value="asc">Price Low to High</option>
-                <option value="desc">Price High to Low</option>
+                <option value="asc">Price Low To High(ascending)</option>
+                <option value="desc">Price High to Low (descending)</option>
               </select>
             </ul>
           </div>
           {/* *******filter by category******** */}
           {/* reset button */}
-          <button
-            onClick={handleReset}
-            className="btn btn-sm bg-[#1A4870] text-white "
-          >
+          <button className="btn btn-sm bg-[#1A4870] text-white ">
             <span className="hidden lg:block text-white">Reset</span>
             <IoMdClose className=" text-2xl text-[#F9DBBA]" />
           </button>
@@ -288,16 +313,12 @@ const Products = () => {
       {/* ****************all product shown********************************************* */}
       <div className=" px-8 mt-5  w-full h-full">
         <div className="flex flex-wrap justify-center align-middle gap-5   ">
-          {displayedProducts.length === 0 ? (
-            <p>sorry</p>
-          ) : (
-            displayedProducts.map((product: any) => (
-              <ProductsSingleView
-                key={product._id}
-                product={product}
-              ></ProductsSingleView>
-            ))
-          )}
+          {displayedProducts.map((product: any) => (
+            <ProductsSingleView
+              key={product._id}
+              product={product}
+            ></ProductsSingleView>
+          ))}
         </div>
         {/* *********************** */}
       </div>
