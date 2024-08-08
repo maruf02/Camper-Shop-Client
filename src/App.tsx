@@ -3,7 +3,13 @@ import { useGetProductsQuery } from "./redux/api/api";
 
 function App() {
   const { data: products, isLoading, isError } = useGetProductsQuery(undefined);
-  console.log(products.data[0].name);
+  if (isError) {
+    console.log("is error loading");
+  }
+  if (isLoading) {
+    console.log("loding");
+  }
+  console.log(products.data);
   return (
     <div>
       <h1>Camper Shop</h1>
