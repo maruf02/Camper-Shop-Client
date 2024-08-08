@@ -7,6 +7,7 @@ import { store } from "./redux/store.ts";
 import Root from "./root/Root.tsx";
 import HomePage from "./pages/Homepage/HomePage.tsx";
 import ErrorPage from "./ErrorPage/ErrorPage.tsx";
+import Products from "./pages/Products/Products.tsx";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage></HomePage>,
+      },
+      {
+        path: "/products",
+        element: <Products></Products>,
       },
     ],
   },

@@ -1,13 +1,14 @@
 import React from "react";
 import { FaRegHeart } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const menu = (
     <>
       <li>
-        {/* <NavLink to="/" className="activeNavLink "> */}
-        <button>Home</button>
-        {/* </NavLink> */}
+        <NavLink to="/" className="activeNavLink ">
+          <button>Home</button>
+        </NavLink>
       </li>
       <li>
         {/* <NavLink to="/about" className="activeNavLink "> */}
@@ -16,9 +17,9 @@ const Navbar = () => {
       </li>
 
       <li>
-        {/* <NavLink to="/jobs" className="activeNavLink "> */}
-        <button>Product</button>
-        {/* </NavLink> */}
+        <NavLink to="/products" className="activeNavLink ">
+          <button>Product</button>
+        </NavLink>
       </li>
       <li>
         {/* <NavLink to="/hContact" className="activeNavLink "> */}
