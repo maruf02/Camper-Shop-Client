@@ -7,21 +7,21 @@ import { useGetAllProductsQuery } from "../redux/api/api";
 
 const Navbar = () => {
   // redux part for cart
-  const dispatch = useDispatch();
-  const savedProductIds = useSelector(
-    (state: RootState) => state.product.savedProductIds
-  );
-  const { data: productsData } = useGetAllProductsQuery(undefined);
+  // const dispatch = useDispatch();
+  // const savedProductIds = useSelector(
+  //   (state: RootState) => state.product.savedProductIds
+  // );
+  // const { data: productsData } = useGetAllProductsQuery(undefined);
 
-  const productst = productsData?.data || [];
+  // const productst = productsData?.data || [];
 
-  // Filter products that match saved IDs
-  const filteredProducts = productst.filter((product) =>
-    savedProductIds.includes(product._id)
-  );
-  const totalSum = filteredProducts.reduce((accumulator, product) => {
-    return accumulator + product.price;
-  }, 0);
+  // // Filter products that match saved IDs
+  // const filteredProducts = productst.filter((product) =>
+  //   savedProductIds.includes(product._id)
+  // );
+  // const totalSum = filteredProducts.reduce((accumulator, product) => {
+  //   return accumulator + product.price;
+  // }, 0);
 
   // console.log("Total Sum:", totalSum);
   // console.log("filteredProducts price", filteredProducts[0].price);
@@ -188,7 +188,7 @@ const Navbar = () => {
                     />
                   </svg>
                   <span className="badge badge-sm indicator-item">
-                    {savedProductIds.length}
+                    {/* {savedProductIds.length} */}8
                   </span>
                 </div>
               </div>
@@ -198,9 +198,10 @@ const Navbar = () => {
               >
                 <div className="card-body">
                   <span className="text-lg font-bold">
-                    {savedProductIds.length}
+                    {/* {savedProductIds.length} */}8
                   </span>
-                  <span className="text-info">Subtotal: ${totalSum}</span>
+                  {/* <span className="text-info">Subtotal: ${totalSum}</span> */}
+                  <span className="text-info">Subtotal: $205</span>
                   <div className="card-actions">
                     <NavLink to="/cartView" className="activeNavLink ">
                       <button className="btn btn-primary btn-block">

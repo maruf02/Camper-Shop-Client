@@ -30,7 +30,8 @@ const CartViewPage = () => {
             <p>Product ID: {id}</p>
           </div>
         ))}
-        <button onClick={() => dispatch(clearProductIds())}>Clear All</button>
+        <button>Clear All</button>
+        {/* <button onClick={() => dispatch(clearProductIds())}>Clear All</button> */}
         <div className="flex flex-wrap justify-center align-middle gap-5">
           {filteredProducts.length === 0 ? (
             <p>No saved products found</p>

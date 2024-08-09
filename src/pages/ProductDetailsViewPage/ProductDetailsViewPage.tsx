@@ -2,14 +2,18 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetProductByIdQuery } from "../../redux/api/api";
 import SideBySideMagnifier from "../ImageMagnifier/SideBySideMagnifier";
-import { useDispatch } from "react-redux";
-import { addProductId } from "../../redux/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct, addProductId } from "../../redux/productSlice";
+import { RootState } from "../../redux/store";
 
 const ProductDetailsViewPage = () => {
   const [requiredQty, setRequiredQty] = useState(1);
   const { id } = useParams<{ id: string }>();
   const { data: productsData, isLoading, isError } = useGetProductByIdQuery(id);
   const dispatch = useDispatch();
+  const savedProducts = useSelector(
+    (state: RootState) => state.product.savedProducts
+  );
 
   const product = productsData?.data || [];
   console.log(product);
@@ -21,11 +25,17 @@ const ProductDetailsViewPage = () => {
   };
 
   const handleProductIdLocalStorage = () => {
-    dispatch(addProductId(product._id)); // Add only the product's _id to the list of saved product IDs
+    const productToAdd = { ...product, requiredQty };
+    dispatch(addProduct(productToAdd));
   };
 
   const isOutOfStock = product.quantity === 0;
-  const isAddToCartDisabled = requiredQty > product.quantity || isOutOfStock;
+  const existingProduct = savedProducts.find((p) => p._id === product._id);
+  const isAddToCartDisabled =
+    isOutOfStock ||
+    (existingProduct &&
+      existingProduct.requiredQty + requiredQty > product.quantity);
+
   return (
     <div>
       <h2>ProductDetailsViewPage:{product.image}</h2>
@@ -75,7 +85,11 @@ const ProductDetailsViewPage = () => {
               className="btn btn-primary mt-4 my-5"
               disabled={isAddToCartDisabled}
             >
-              Add to Cart
+              {isAddToCartDisabled ? (
+                <p className="text-red-500">Cannot Add to Cart</p>
+              ) : (
+                "Add to Cart"
+              )}
             </button>
           </div>
         </div>

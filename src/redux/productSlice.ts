@@ -1,92 +1,70 @@
-// store all information of item in localstorage
-
-// import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-// interface Product {
-//   name: string;
-//   description: string;
-//   price: number;
-//   category: string;
-//   quantity: number;
-//   ratings: number;
-//   images: string[];
-// }
-
-// interface ProductState {
-//   savedProducts: Product[];
-// }
-
-// const initialState: ProductState = {
-//   savedProducts: JSON.parse(localStorage.getItem('savedProducts') || '[]'),
-// };
-
-// const productSlice = createSlice({
-//   name: 'product',
-//   initialState,
-//   reducers: {
-//     addProduct: (state, action: PayloadAction<Product>) => {
-//       state.savedProducts.push(action.payload);
-//       localStorage.setItem('savedProducts', JSON.stringify(state.savedProducts));
-//     },
-//     removeProduct: (state, action: PayloadAction<string>) => {
-//       state.savedProducts = state.savedProducts.filter(
-//         (product) => product.name !== action.payload
-//       );
-//       localStorage.setItem('savedProducts', JSON.stringify(state.savedProducts));
-//     },
-//     clearProducts: (state) => {
-//       state.savedProducts = [];
-//       localStorage.removeItem('savedProducts');
-//     },
-//   },
-// });
-
-// export const { addProduct, removeProduct, clearProducts } = productSlice.actions;
-
-// export default productSlice.reducer;
-
-// store only _id of every item
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  quantity: number;
+  ratings: number;
+  images: string[];
+  requiredQty: number;
+}
+
 interface ProductState {
-  savedProductIds: string[];
+  savedProducts: Product[];
 }
 
 const initialState: ProductState = {
-  savedProductIds: JSON.parse(localStorage.getItem("savedProductIds") || "[]"),
+  savedProducts: JSON.parse(localStorage.getItem("savedProducts") || "[]"),
 };
 
 const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    addProductId: (state, action: PayloadAction<string>) => {
-      if (!state.savedProductIds.includes(action.payload)) {
-        state.savedProductIds.push(action.payload);
-        localStorage.setItem(
-          "savedProductIds",
-          JSON.stringify(state.savedProductIds)
-        );
+    addProduct: (state, action: PayloadAction<Product>) => {
+      const existingProduct = state.savedProducts.find(
+        (product) => product._id === action.payload._id
+      );
+
+      if (existingProduct) {
+        // Update the quantity if the product already exists in the cart
+        if (
+          existingProduct.requiredQty + action.payload.requiredQty <=
+          existingProduct.quantity
+        ) {
+          existingProduct.requiredQty += action.payload.requiredQty;
+        }
+      } else {
+        // Add new product to the cart
+        state.savedProducts.push(action.payload);
       }
+
+      // Update the local storage
+      localStorage.setItem(
+        "savedProducts",
+        JSON.stringify(state.savedProducts)
+      );
     },
-    removeProductId: (state, action: PayloadAction<string>) => {
-      state.savedProductIds = state.savedProductIds.filter(
-        (id) => id !== action.payload
+    removeProduct: (state, action: PayloadAction<string>) => {
+      state.savedProducts = state.savedProducts.filter(
+        (product) => product._id !== action.payload
       );
       localStorage.setItem(
-        "savedProductIds",
-        JSON.stringify(state.savedProductIds)
+        "savedProducts",
+        JSON.stringify(state.savedProducts)
       );
     },
-    clearProductIds: (state) => {
-      state.savedProductIds = [];
-      localStorage.removeItem("savedProductIds");
+    clearProducts: (state) => {
+      state.savedProducts = [];
+      localStorage.removeItem("savedProducts");
     },
   },
 });
 
-export const { addProductId, removeProductId, clearProductIds } =
+export const { addProduct, removeProduct, clearProducts } =
   productSlice.actions;
 
 export default productSlice.reducer;
