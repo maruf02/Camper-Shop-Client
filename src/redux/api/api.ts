@@ -28,6 +28,12 @@ export const baseApi = createApi({
         method: "GET",
       }),
     }),
+    getProductById: builder.query({
+      query: (id: string) => ({
+        url: `/api/products/${id}`,
+        method: "GET",
+      }),
+    }),
     getPriceRangeProducts: builder.query({
       query: () => ({
         url: "/api/products",
@@ -43,4 +49,5 @@ export const {
   useGetPriceRangeProductsQuery,
   useGetCategoriesProductsQuery,
   useGetSortProductsQuery,
+  useGetProductByIdQuery,
 } = baseApi;

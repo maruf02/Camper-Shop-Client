@@ -8,6 +8,8 @@ import Root from "./root/Root.tsx";
 import HomePage from "./pages/Homepage/HomePage.tsx";
 import ErrorPage from "./ErrorPage/ErrorPage.tsx";
 import Products from "./pages/Products/Products.tsx";
+import ProductDetailsViewPage from "./pages/ProductDetailsViewPage/ProductDetailsViewPage.tsx";
+import CartViewPage from "./pages/CartViewPage/CartViewPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +24,14 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products></Products>,
+      },
+      {
+        path: "/ProductDetailsView/:id",
+        element: <ProductDetailsViewPage></ProductDetailsViewPage>,
+      },
+      {
+        path: "/cartView",
+        element: <CartViewPage></CartViewPage>,
       },
     ],
   },

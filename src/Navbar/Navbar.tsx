@@ -1,8 +1,31 @@
 import React from "react";
 import { FaRegHeart } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { RootState } from "../redux/store";
+import { useGetAllProductsQuery } from "../redux/api/api";
 
 const Navbar = () => {
+  // redux part for cart
+  const dispatch = useDispatch();
+  const savedProductIds = useSelector(
+    (state: RootState) => state.product.savedProductIds
+  );
+  const { data: productsData } = useGetAllProductsQuery(undefined);
+
+  const productst = productsData?.data || [];
+
+  // Filter products that match saved IDs
+  const filteredProducts = productst.filter((product) =>
+    savedProductIds.includes(product._id)
+  );
+  const totalSum = filteredProducts.reduce((accumulator, product) => {
+    return accumulator + product.price;
+  }, 0);
+
+  // console.log("Total Sum:", totalSum);
+  // console.log("filteredProducts price", filteredProducts[0].price);
+  // redux part for cart
   const menu = (
     <>
       <li>
@@ -22,10 +45,9 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        {/* <NavLink to="/hContact" className="activeNavLink "> */}
-        <button>Cart</button>
-
-        {/* </NavLink> */}
+        <NavLink to="/cartView" className="activeNavLink ">
+          <button>Cart</button>
+        </NavLink>
       </li>
     </>
   );
@@ -165,7 +187,9 @@ const Navbar = () => {
                       d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  <span className="badge badge-sm indicator-item">8</span>
+                  <span className="badge badge-sm indicator-item">
+                    {savedProductIds.length}
+                  </span>
                 </div>
               </div>
               <div
@@ -173,12 +197,16 @@ const Navbar = () => {
                 className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow"
               >
                 <div className="card-body">
-                  <span className="text-lg font-bold">8 Items</span>
-                  <span className="text-info">Subtotal: $999</span>
+                  <span className="text-lg font-bold">
+                    {savedProductIds.length}
+                  </span>
+                  <span className="text-info">Subtotal: ${totalSum}</span>
                   <div className="card-actions">
-                    <button className="btn btn-primary btn-block">
-                      View cart
-                    </button>
+                    <NavLink to="/cartView" className="activeNavLink ">
+                      <button className="btn btn-primary btn-block">
+                        View cart
+                      </button>
+                    </NavLink>
                   </div>
                 </div>
               </div>
