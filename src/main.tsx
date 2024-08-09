@@ -10,6 +10,7 @@ import ErrorPage from "./ErrorPage/ErrorPage.tsx";
 import Products from "./pages/Products/Products.tsx";
 import ProductDetailsViewPage from "./pages/ProductDetailsViewPage/ProductDetailsViewPage.tsx";
 import CartViewPage from "./pages/CartViewPage/CartViewPage.tsx";
+import CheckOutPage from "./pages/CheckOutPage/CheckOutPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/cartView",
         element: <CartViewPage></CartViewPage>,
+      },
+      {
+        path: "/checkOut",
+        element: <CheckOutPage></CheckOutPage>,
       },
     ],
   },
