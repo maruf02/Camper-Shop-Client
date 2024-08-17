@@ -33,16 +33,16 @@ const SideBySideMagnifier: React.FC<MagnifierProps> = ({ imageUrl }) => {
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="relative w-full h-full overflow-hidden border-r border-gray-300"
+        className="relative w-full h-full overflow-hidden border-r border-gray-300 "
       >
         <img
           src={imageUrl}
           alt="Product"
-          className="w-full h-full object-cover pointer-events-none"
+          className="w-full h-full object-cover pointer-events-none "
         />
       </div>
       <div
-        className={`absolute left-[400px] top-0 w-[300px] h-[300px] bg-no-repeat bg-cover z-10 ${
+        className={`absolute left-[560px] top-0 w-[300px] h-[300px] bg-no-repeat bg-cover z-10 ${
           isZoomVisible ? "block" : "hidden"
         }`}
         style={{

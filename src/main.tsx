@@ -11,6 +11,8 @@ import Products from "./pages/Products/Products.tsx";
 import ProductDetailsViewPage from "./pages/ProductDetailsViewPage/ProductDetailsViewPage.tsx";
 import CartViewPage from "./pages/CartViewPage/CartViewPage.tsx";
 import CheckOutPage from "./pages/CheckOutPage/CheckOutPage.tsx";
+import ProductManagement from "./pages/ProductManagementPage/ProductManagement.tsx";
+import PageWithUnloadWarning from "./PageWithUnloadWarning/PageWithUnloadWarning.tsx";
 
 const router = createBrowserRouter([
   {
@@ -35,8 +37,16 @@ const router = createBrowserRouter([
         element: <CartViewPage></CartViewPage>,
       },
       {
+        path: "/cart",
+        element: <PageWithUnloadWarning></PageWithUnloadWarning>,
+      },
+      {
         path: "/checkOut",
         element: <CheckOutPage></CheckOutPage>,
+      },
+      {
+        path: "/productManagement",
+        element: <ProductManagement></ProductManagement>,
       },
     ],
   },

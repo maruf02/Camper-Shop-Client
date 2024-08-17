@@ -2,7 +2,7 @@ import StarRatings from "react-star-ratings";
 import { Link } from "react-router-dom";
 
 const ProductsSingleView = ({ product }) => {
-  const { _id, name, price, category, quantity, ratings, images } = product;
+  const { _id, name, price, category, quantity, ratings, Mimages } = product;
 
   return (
     <div>
@@ -10,12 +10,14 @@ const ProductsSingleView = ({ product }) => {
       <Link to={`/ProductDetailsView/${_id}`}>
         <div className="card glass w-80">
           <figure>
-            <img src={images} alt="car!" className="w-80 h-60" />
+            <img src={Mimages} alt="car!" className="w-80 h-60" />
           </figure>
           <div className=" my-5 ">
             <div className="space-y-0 pl-5">
               <div className="badge badge-outline">{category}</div>
-              <h2 className="card-title m-0 py-2 text-2xl">{name}</h2>
+              <h2 className="card-title m-0 py-2 text-2xl w-full h-20">
+                {name}
+              </h2>
               <p className="m-0 text-md">QTY: {quantity}pcs</p>
               <div className="flex justify-between align-middle pr-5 pb-3">
                 <p className="m-0 text-md">Price: {price}</p>

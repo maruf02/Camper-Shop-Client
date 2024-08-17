@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetProductByIdQuery } from "../../redux/api/api";
 import SideBySideMagnifier from "../ImageMagnifier/SideBySideMagnifier";
-import { useDispatch, useSelector } from "react-redux";
-import { addProduct, addProductId } from "../../redux/productSlice";
-import { RootState } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../../redux/productSlice";
+
+import StarRatings from "react-star-ratings";
+import Swal from "sweetalert2";
+// Import Swiper React components
 
 const ProductDetailsViewPage = () => {
   const [requiredQty, setRequiredQty] = useState(1);
   const { id } = useParams<{ id: string }>();
   const { data: productsData, isLoading, isError } = useGetProductByIdQuery(id);
   const dispatch = useDispatch();
-  const savedProducts = useSelector(
-    (state: RootState) => state.product.savedProducts
-  );
 
   const product = productsData?.data || [];
   console.log(product);
@@ -27,30 +27,48 @@ const ProductDetailsViewPage = () => {
   const handleProductIdLocalStorage = () => {
     const productToAdd = { ...product, requiredQty };
     dispatch(addProduct(productToAdd));
+    Swal.fire({
+      title: "Success!",
+      text: "Product added to cart successfully.",
+      icon: "success",
+      confirmButtonText: "OK",
+    });
   };
 
   const isOutOfStock = product.quantity === 0;
-  const existingProduct = savedProducts.find((p) => p._id === product._id);
-  const isAddToCartDisabled =
-    isOutOfStock ||
-    (existingProduct &&
-      existingProduct.requiredQty + requiredQty > product.quantity);
+  // const existingProduct = savedProducts.find((p) => p._id === product._id);
+  const isAddToCartDisabled = isOutOfStock || requiredQty > product.quantity;
 
   return (
-    <div>
-      <h2>ProductDetailsViewPage:{product.image}</h2>
-      <div className="flex flex-col md:flex-row border border-2 border-red-500 w-11/12  mx-auto h-96 gap-10">
+    <div className="my-10 min-h-screen md:min-h-full">
+      {/* <h2>ProductDetailsViewPage:{product.Mimages}</h2> */}
+      <div className="text-3xl text-black font-semibold underline text-center pb-8 md:pb-14">
+        See your Product in details:
+      </div>
+      <div className="flex flex-col md:flex-row  w-11/12  mx-auto h-96 gap-10">
         {/* left side portion */}
-        <div className="w-full md:w-2/6 h-96 flex justify-center border border-2 border-gray-900  ">
-          <SideBySideMagnifier imageUrl={product.images} />
+        <div className="w-full md:w-2/6 h-96 flex justify-center  ">
+          <SideBySideMagnifier imageUrl={product.Mimages} />
         </div>
         {/* left side portion */}
         {/* Right side portion */}
-        <div className="w-full md:w-4/6 h-96 border border-2 border-gray-900 flex flex-col justify-between">
+        <div className="w-full md:w-4/6 h-96  flex flex-col justify-between">
           <div>
-            <h1>Name:</h1>
-            <h1>rating:</h1>
-            <h1>Category:</h1>
+            <h1 className="text-2xl text-black font-semibold">
+              {product.name}
+            </h1>
+            <h1>
+              rating:
+              <StarRatings
+                rating={product.ratings}
+                starRatedColor="#f39c12"
+                numberOfStars={5}
+                name="rating"
+                starDimension="18px"
+                starSpacing="1px"
+              />
+            </h1>
+            <h1>Category: {product.category}</h1>
             <h1>Available Qty: {product.quantity}</h1>
             <h1 className="flex flex-row align-middle">
               <span className="pr-2">Require Qty:</span>
@@ -61,6 +79,7 @@ const ProductDetailsViewPage = () => {
                 onChange={handleQtyChange}
                 disabled={isOutOfStock}
                 min="0"
+                max={product.quantity}
                 placeholder="QTY"
                 className="input input-bordered input-primary  input-sm w-16 max-w-xs text-black text-lg font-semibold bg-inherit "
               />
@@ -77,7 +96,7 @@ const ProductDetailsViewPage = () => {
               )}
             </h1>
             <p className="broder border-2 border-gray-300 my-2"></p>
-            <h1>Description:</h1>
+            <h1>Description:{product.description}</h1>
           </div>
           <div className="flex justify-center  ">
             <button

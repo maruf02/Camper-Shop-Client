@@ -40,6 +40,35 @@ export const baseApi = createApi({
         method: "GET",
       }),
     }),
+    createOrderItem: builder.mutation({
+      query: (orderData) => ({
+        url: "/api/orderItems",
+        method: "POST",
+        body: orderData,
+      }),
+    }),
+
+    addProductItem: builder.mutation({
+      query: (productData) => ({
+        url: "/api/products",
+        method: "POST",
+        body: productData,
+      }),
+    }),
+
+    updateProduct: builder.mutation({
+      query: ({ productId, productModifyData }) => ({
+        url: `/api/products/${productId}`,
+        method: "PUT",
+        body: productModifyData,
+      }),
+    }),
+    deleteProduct: builder.mutation({
+      query: (productId: string) => ({
+        url: `/api/products/${productId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -50,4 +79,8 @@ export const {
   useGetCategoriesProductsQuery,
   useGetSortProductsQuery,
   useGetProductByIdQuery,
+  useCreateOrderItemMutation,
+  useAddProductItemMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
 } = baseApi;

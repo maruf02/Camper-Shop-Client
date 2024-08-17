@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { RootState } from "../redux/store";
 import { useGetAllProductsQuery } from "../redux/api/api";
+import { MdManageAccounts } from "react-icons/md";
 
 const Navbar = () => {
   // redux part for cart
@@ -74,7 +75,7 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-[#1A4870] rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               {/* <li>
                 <a>Item 1</a>
@@ -217,7 +218,28 @@ const Navbar = () => {
           {/* cart section */}
           {/* /////////////////////////////////////////// */}
 
-          <a className="btn btn-primary text-white">Button</a>
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
+            >
+              <div className="w-12  border-2 border-[#5B99C2] rounded-full  ">
+                <MdManageAccounts className="w-full h-full p-1" />
+              </div>
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content bg-[#1A4870] rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            >
+              <NavLink to="/productManagement">
+                <button className="text-white btn bg-[#1A4870] hover:bg-[#5B99C2] btn-md justify-between w-full">
+                  Product Management
+                </button>
+              </NavLink>
+              <li></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

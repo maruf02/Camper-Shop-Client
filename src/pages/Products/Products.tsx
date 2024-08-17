@@ -3,13 +3,7 @@ import { AiOutlineBarChart } from "react-icons/ai";
 import { FaSearch, FaSortNumericDown } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { MdManageSearch, MdPriceCheck } from "react-icons/md";
-import {
-  useGetAllProductsQuery,
-  useGetCategoriesProductsQuery,
-  useGetPriceRangeProductsQuery,
-  useGetSearchProductsQuery,
-  useGetSortProductsQuery,
-} from "../../redux/api/api";
+import { useGetAllProductsQuery } from "../../redux/api/api";
 import ProductsSingleView from "../ProductsSingleView/ProductsSingleView";
 
 const Products = () => {
@@ -25,12 +19,6 @@ const Products = () => {
     isError,
     isLoading,
   } = useGetAllProductsQuery(undefined);
-  // const { data: SearchData } = useGetSearchProductsQuery(searchText);
-
-  // const productst = productsData?.data || [];
-
-  // const Search = SearchData?.data || [];
-  // console.log("seardata", Search);
 
   if (productsData && products.length === 0) {
     setProducts(productsData.data);
@@ -86,15 +74,20 @@ const Products = () => {
     setSelectedPriceAscDesc("");
     setDisplayedProducts(productsData?.data || []); // Reset to initial product list
   };
-
-  if (isLoading) return <div>Loading...</div>;
+  const categories = ["Shoes", "Bags", "Toy"];
+  if (isLoading)
+    return (
+      <div className="text-center py-5">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
   if (isError) return <div>Error loading products</div>;
 
   console.log("Selected :", selectedCategory);
   console.log("Selected :", selectedPriceAscDesc);
 
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-full min-h-screen">
       {/* ****************************************************************************************************** */}
       {/* Product welcome banner section */}
       <div
@@ -236,8 +229,11 @@ const Products = () => {
                 <option disabled selected>
                   Select Category
                 </option>
-                <option value="camper1">Han Solo</option>
-                <option>Greedo</option>
+                {categories.map((category, index) => (
+                  <option key={index} value={category}>
+                    {category}
+                  </option>
+                ))}
               </select>
             </ul>
           </div>
@@ -286,7 +282,7 @@ const Products = () => {
       {/* ************************************all product shown****************************************************************** */}
       <div className="border border-2 border-gray-400"></div>
       {/* ****************all product shown********************************************* */}
-      <div className=" px-8 mt-5  w-full h-full">
+      <div className=" px-8 mt-5  w-full h-full my-10">
         <div className="flex flex-wrap justify-center align-middle gap-5   ">
           {displayedProducts.length === 0 ? (
             <p>sorry</p>

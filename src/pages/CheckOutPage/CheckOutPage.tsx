@@ -1,154 +1,170 @@
-// import React from "react";
-// import { useLocation } from "react-router-dom";
-
-// const CheckOutPage = () => {
-//   const location = useLocation();
-//   const state = location.state as {
-//     totalItems?: number;
-//     items?: Array<{ name: string; _id: string; requiredQty: number }>;
-//     totalPrice?: number;
-//   };
-
-//   const totalItems = state.totalItems ?? 0;
-//   const items = state.items ?? [];
-//   const totalPrice = state.totalPrice ?? 0;
-
-//   const handleCheckOut = (event: React.FormEvent) => {
-//     event.preventDefault();
-//     event.preventDefault();
-
-//     // Extract all _id values from items
-//     const itemIds = items.map((item) => item._id);
-
-//     console.log("Item IDs:", itemIds);
-//     console.log("Checkout Details", items, totalItems, totalPrice);
-//   };
-
-//   return (
-//     <div className="py-5 flex flex-col gap-2">
-//       <h2>CheckOutPage</h2>
-//       <h2>Total Items: {totalItems}</h2>
-//       <h2>Items:</h2>
-//       <ul>
-//         {items.map((item) => (
-//           <li key={item._id}>
-//             {item.name}:{item.requiredQty}
-//           </li>
-//         ))}
-//       </ul>
-//       <h2>Total Price: ${totalPrice.toFixed(2)}</h2>
-//       <form onSubmit={handleCheckOut}>
-//         <label htmlFor="name">Name</label>
-//         <input type="text" name="name" id="name" required />
-//         <label htmlFor="email">Email</label>
-//         <input type="email" name="email" id="email" required />
-//         <label htmlFor="phone">Phone</label>
-//         <input type="number" name="phone" id="phone" required />
-//         <label htmlFor="address">Address</label>
-//         <input type="text" name="address" id="address" required />
-//         <label htmlFor="payment">Payment Method</label>
-//         <input
-//           type="radio"
-//           name="payment"
-//           value="credit"
-//           id="credit"
-//           className="radio radio-primary"
-//         />
-//         <label htmlFor="credit">Credit Card</label>
-//         <input
-//           type="radio"
-//           name="payment"
-//           value="paypal"
-//           id="paypal"
-//           className="radio radio-primary"
-//         />
-//         <label htmlFor="paypal">PayPal</label>
-//         <button type="submit">Submit</button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default CheckOutPage;
-
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { clearOrderData } from "../../redux/placeOrderSlice";
+import { useCreateOrderItemMutation } from "../../redux/api/api";
+import { clearProducts } from "../../redux/productSlice";
+import Swal from "sweetalert2";
+import useReloadWarning from "../../redux/useReloadWarning";
 
 const CheckOutPage = () => {
+  useReloadWarning();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // Retrieve data from the Redux store
   const orderData = useSelector(
     (state: RootState) => state.placeOrder.orderData
   );
+  const [createOrderItem] = useCreateOrderItemMutation();
 
-  // Fallback if data is not available
   const totalItems = orderData?.totalItems ?? 0;
   const items = orderData?.items ?? [];
   const totalPrice = orderData?.totalPrice ?? 0;
+  // const itemIds = items.map((item) => item._id);
 
-  const handleCheckOut = (event: React.FormEvent) => {
+  const handleCheckOut = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    // Extract all _id values from items
+    const form = event.target as HTMLFormElement;
+    const name = form.name.value;
+    const email = form.email.value;
+    const phone = form.phone.value;
+    const address = form.address.value;
+    const payment = form.payment.value;
+    const purchaseDate = new Date().toLocaleDateString();
     const itemIds = items.map((item) => item._id);
 
-    console.log("Item IDs:", itemIds);
-    console.log("Checkout Details", items, totalItems, totalPrice);
+    const orderItem = {
+      items,
+      totalItems,
+      totalPrice,
+      itemIds,
+      name,
+      email,
+      phone,
+      address,
+      payment,
+      purchaseDate,
+    };
+    // console.log("Checkout Details:", {
+    //   orderItem,
+    // });
 
-    // Clear order data after checkout
-    dispatch(clearOrderData());
+    try {
+      const response = await createOrderItem(orderItem).unwrap();
+      console.log("Order created successfully", response);
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500,
+      });
 
-    // Optionally navigate to a confirmation or another page
-    navigate("/confirmation");
+      dispatch(clearOrderData());
+      dispatch(clearProducts());
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to create order", error);
+    }
   };
 
   return (
-    <div className="py-5 flex flex-col gap-2">
-      <h2>CheckOutPage</h2>
-      <h2>Total Items: {totalItems}</h2>
-      <h2>Items:</h2>
-      <ul>
-        {items.map((item) => (
-          <li key={item._id}>
-            {item.name}: {item.requiredQty}
-          </li>
-        ))}
-      </ul>
-      <h2>Total Price: ${totalPrice.toFixed(2)}</h2>
-      <form onSubmit={handleCheckOut}>
-        <label htmlFor="name">Name</label>
-        <input type="text" name="name" id="name" required />
-        <label htmlFor="email">Email</label>
-        <input type="email" name="email" id="email" required />
-        <label htmlFor="phone">Phone</label>
-        <input type="number" name="phone" id="phone" required />
-        <label htmlFor="address">Address</label>
-        <input type="text" name="address" id="address" required />
-        <label htmlFor="payment">Payment Method</label>
-        <input
-          type="radio"
-          name="payment"
-          value="credit"
-          id="credit"
-          className="radio radio-primary"
-        />
-        <label htmlFor="credit">Credit Card</label>
-        <input
-          type="radio"
-          name="payment"
-          value="paypal"
-          id="paypal"
-          className="radio radio-primary"
-        />
-        <label htmlFor="paypal">PayPal</label>
-        <button type="submit">Submit</button>
-      </form>
+    <div className="my-10 ">
+      <h1 className="text-2xl text-black font-semibold text-center pb-5 underline">
+        CheckOut Your Purchase:
+      </h1>
+      <div className=" flex flex-col lg:flex-row gap-5 w-6/12 h-full mx-auto  shadow-2xl rounded-lg">
+        {/* left */}
+        <div className=" w-full pl-3 md:pl-10  align-middle py-10 ">
+          <div className="text-xl text-black font-medium underline">
+            Total Items: ({totalItems})
+          </div>
+          <div className="text-lg text-black font-medium ">Items:</div>
+          <ul>
+            {items.map((item, index) => (
+              <li key={item._id}>
+                {index + 1} . {item.name}: {item.requiredQty} pcs
+              </li>
+            ))}
+          </ul>
+          <div className="text-xl text-black font-medium ">
+            Total Price: ${totalPrice.toFixed(2)}
+          </div>
+        </div>
+        {/* left */}
+        {/* right */}
+        <div className="w-full  justify-start pl-10 pt-10">
+          <form
+            onSubmit={handleCheckOut}
+            className="flex flex-col gap-2 py-5 pl-5 "
+          >
+            <div>
+              <label className="pr-5">Name:</label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter your name"
+                id="name"
+                required
+                className=" bg-white text-black input input-bordered input-primary input-sm pl-5"
+              />
+            </div>
+            <div>
+              <label className="pr-7">Email:</label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your Email"
+                id="email"
+                required
+                className=" bg-white text-black input input-bordered input-primary input-sm pl-5"
+              />
+            </div>
+            <div>
+              <label className="pr-5">Phone:</label>
+              <input
+                type="number"
+                name="phone"
+                placeholder="Enter your phone"
+                id="phone"
+                required
+                className=" bg-white text-black input input-bordered input-primary input-sm pl-5"
+              />
+            </div>
+            <div>
+              <label className="pr-3">Address:</label>
+              <input
+                type="text"
+                name="address"
+                placeholder="Enter your Address"
+                id="address"
+                required
+                className=" bg-white text-black input input-bordered input-primary input-sm"
+              />
+            </div>
+
+            <div className="flex flex-row align-middle gap-2">
+              <label className="pr-3">Payment:</label>
+              <input
+                type="radio"
+                name="payment"
+                value="CashOnDelivery"
+                id="credit"
+                required
+                className="radio radio-primary"
+              />
+              <label>Cash On Delivery</label>
+            </div>
+
+            <div className="flex justify-center my-5 w-full">
+              <button className="btn btn-primary w-10/12 flex justify-center">
+                Place Order
+              </button>
+            </div>
+          </form>
+        </div>
+        {/* right */}
+      </div>
     </div>
   );
 };
