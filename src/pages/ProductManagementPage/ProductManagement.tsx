@@ -30,7 +30,7 @@ const ProductManagement = () => {
 
   console.log(products);
 
-  const categories = ["Shoes", "Bags", "Toy"];
+  const categories = ["Monitor", "Motherboard", "Processor", "Ram", "Hdd"];
   const handleAddProduct = async (event: React.FormEvent) => {
     event.preventDefault();
     // Extract form data
@@ -200,7 +200,9 @@ const ProductManagement = () => {
   return (
     <div className="container mx-auto ">
       <div className="flex justify-between pt-5">
-        <h2>ProductManagement</h2>
+        <h2 className="text-2xl text-black font-semibold">
+          Product Management
+        </h2>
 
         <button
           onClick={() => {
@@ -219,7 +221,7 @@ const ProductManagement = () => {
           <span>Add Product</span>
         </button>
         <dialog id="AddProductModal" className="modal  ">
-          <div className="modal-box bg-[#1A4870]  " style={{ width: "600px" }}>
+          <div className="modal-box bg-[#1A4870]  ">
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
               <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">

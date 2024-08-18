@@ -45,9 +45,9 @@ const ProductDetailsViewPage = () => {
       <div className="text-3xl text-black font-semibold underline text-center pb-8 md:pb-14">
         See your Product in details:
       </div>
-      <div className="flex flex-col md:flex-row  w-11/12  mx-auto h-96 gap-10">
+      <div className="flex flex-col lg:flex-row  w-11/12   mx-auto h-full gap-10">
         {/* left side portion */}
-        <div className="w-full md:w-2/6 h-96 flex justify-center  ">
+        <div className="w-full md:w-full h-96 flex justify-center  ">
           <SideBySideMagnifier imageUrl={product.Mimages} />
         </div>
         {/* left side portion */}

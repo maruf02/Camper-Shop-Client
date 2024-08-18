@@ -73,7 +73,7 @@ const CheckOutPage = () => {
       <h1 className="text-2xl text-black font-semibold text-center pb-5 underline">
         CheckOut Your Purchase:
       </h1>
-      <div className=" flex flex-col lg:flex-row gap-5 w-6/12 h-full mx-auto  shadow-2xl rounded-lg">
+      <div className=" flex flex-col lg:flex-row gap-5 w-full md:w-7/12 h-full mx-auto  shadow-2xl rounded-lg">
         {/* left */}
         <div className=" w-full pl-3 md:pl-10  align-middle py-10 ">
           <div className="text-xl text-black font-medium underline">

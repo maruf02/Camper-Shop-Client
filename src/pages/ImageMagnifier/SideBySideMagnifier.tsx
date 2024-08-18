@@ -42,7 +42,7 @@ const SideBySideMagnifier: React.FC<MagnifierProps> = ({ imageUrl }) => {
         />
       </div>
       <div
-        className={`absolute left-[560px] top-0 w-[300px] h-[300px] bg-no-repeat bg-cover z-10 ${
+        className={`absolute left-[30%] top-[100%] w-[300px] h-[300px] bg-no-repeat bg-cover z-10 ${
           isZoomVisible ? "block" : "hidden"
         }`}
         style={{

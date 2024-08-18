@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaRegHeart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -8,24 +8,17 @@ import { MdManageAccounts } from "react-icons/md";
 
 const Navbar = () => {
   // redux part for cart
-  // const dispatch = useDispatch();
-  // const savedProductIds = useSelector(
-  //   (state: RootState) => state.product.savedProductIds
-  // );
-  // const { data: productsData } = useGetAllProductsQuery(undefined);
+  const savedProducts = useSelector(
+    (state: RootState) => state.product.savedProducts
+  );
 
-  // const productst = productsData?.data || [];
+  const total = savedProducts.reduce(
+    (sum, item) => sum + item.price * item.requiredQty,
+    0
+  );
+  console.log("objectPrice", total);
+  console.log("object", savedProducts.length);
 
-  // // Filter products that match saved IDs
-  // const filteredProducts = productst.filter((product) =>
-  //   savedProductIds.includes(product._id)
-  // );
-  // const totalSum = filteredProducts.reduce((accumulator, product) => {
-  //   return accumulator + product.price;
-  // }, 0);
-
-  // console.log("Total Sum:", totalSum);
-  // console.log("filteredProducts price", filteredProducts[0].price);
   // redux part for cart
   const menu = (
     <>
@@ -35,9 +28,9 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        {/* <NavLink to="/about" className="activeNavLink "> */}
-        <button>About</button>
-        {/* </NavLink> */}
+        <NavLink to="/about" className="activeNavLink ">
+          <button>About</button>
+        </NavLink>
       </li>
 
       <li>
@@ -75,96 +68,29 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-[#1A4870] rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-[#1A4870] rounded-box z-[10] mt-3 w-52 p-2 shadow"
             >
-              {/* <li>
-                <a>Item 1</a>
-              </li>
-              <li>
-                <a>Parent</a>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a>Item 3</a>
-              </li> */}
               {menu}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl">daisyUI</a>
+          <div className="flex flex-row items-center gap-2">
+            <img
+              src="https://i.postimg.cc/sDKNspNc/creative-computer-logo-template-23-2149213537.jpg"
+              alt=""
+              className="w-14 h-14 rounded-2xl"
+            />
+            <p className=" text-2xl font-bold text-[#F9DBBA] ">CampheRex</p>
+          </div>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">
-            {/* <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <details>
-                <summary>Parent</summary>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
-              </details>
-            </li>
-            <li>
-              <a>Item 3</a>
-            </li> */}
-            {menu}
-          </ul>
+          <ul className="menu menu-horizontal px-1">{menu}</ul>
         </div>
 
         <div className="navbar-end ">
           {/* /////////////////////////////////////////// */}
-          {/* wishlist section */}
-          <div className="flex-none">
-            <div className="dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle"
-              >
-                <div
-                  className="indicator tooltip tooltip-bottom"
-                  data-tip="Wishlist"
-                >
-                  <FaRegHeart className="h-5 w-5 " />
-                  <span className="badge badge-sm indicator-item">8</span>
-                </div>
-              </div>
-              <div
-                tabIndex={0}
-                className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow"
-              >
-                <div className="card-body">
-                  <span className="text-lg font-bold">8 Items</span>
-                  {/* <span className="text-info">Subtotal: $999</span> */}
-                  <div className="card-actions">
-                    <button className="btn btn-primary btn-block">
-                      View Wishlist
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* wishList section */}
-          {/* /////////////////////////////////////////// */}
-          {/* /////////////////////////////////////////// */}
           {/* cart section */}
-          <div className="flex-none mr-3">
-            <div className="dropdown dropdown-end">
+          <div className="flex-none mr-3 ">
+            <div className="dropdown dropdown-end ">
               <div
                 tabIndex={0}
                 role="button"
@@ -189,20 +115,23 @@ const Navbar = () => {
                     />
                   </svg>
                   <span className="badge badge-sm indicator-item">
-                    {/* {savedProductIds.length} */}8
+                    {savedProducts.length}
                   </span>
                 </div>
               </div>
               <div
                 tabIndex={0}
-                className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow"
+                className="card card-compact dropdown-content bg-[#1A4870] z-[10] mt-3 w-52 shadow"
               >
                 <div className="card-body">
-                  <span className="text-lg font-bold">
-                    {/* {savedProductIds.length} */}8
+                  <span className="text-base font-semibold">
+                    Total Items: {savedProducts.length} Pcs
+                  </span>
+                  <span className="text-info text-base font-semibold">
+                    Subtotal: ${total}
                   </span>
                   {/* <span className="text-info">Subtotal: ${totalSum}</span> */}
-                  <span className="text-info">Subtotal: $205</span>
+
                   <div className="card-actions">
                     <NavLink to="/cartView" className="activeNavLink ">
                       <button className="btn btn-primary btn-block">
@@ -230,10 +159,10 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-[#1A4870] rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-[#1A4870] rounded-box z-[10] mt-3 w-52 p-2 shadow"
             >
               <NavLink to="/productManagement">
-                <button className="text-white btn bg-[#1A4870] hover:bg-[#5B99C2] btn-md justify-between w-full">
+                <button className="text-white btn bg-[#1A4870] hover:bg-[#5B99C2] btn-md justify-between w-full z-[10]">
                   Product Management
                 </button>
               </NavLink>

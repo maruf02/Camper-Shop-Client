@@ -5,6 +5,7 @@ import { IoMdClose } from "react-icons/io";
 import { MdManageSearch, MdPriceCheck } from "react-icons/md";
 import { useGetAllProductsQuery } from "../../redux/api/api";
 import ProductsSingleView from "../ProductsSingleView/ProductsSingleView";
+import { motion } from "framer-motion";
 
 const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -94,10 +95,10 @@ const Products = () => {
         className="hero h-32"
         style={{
           backgroundImage:
-            "url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp)",
+            "url(https://i.postimg.cc/tgj1Lp4Q/pexels-pixabay-531880.jpg)",
         }}
       >
-        <div className="hero-overlay bg-opacity-90"></div>
+        <div className="hero-overlay bg-opacity-40"></div>
         <div className="hero-content text-neutral-content text-center">
           <div className="max-w-lg">
             <h1 className="mb-5 text-3xl font-bold text-white">
@@ -170,7 +171,7 @@ const Products = () => {
 
           {/* //////// filter by price range /////// */}
           <form onSubmit={handleSortByPriceRange}>
-            <div className="dropdown dropdown-end text-white dropdown-hover ">
+            <div className="dropdown md:dropdown-end  text-white dropdown-hover ">
               <div
                 tabIndex={0}
                 role="button"
@@ -204,7 +205,7 @@ const Products = () => {
                   />
                 </div>
                 <button className="btn btn-sm bg-[#1A4870] text-white  h-2 mt-2">
-                  <span className="hidden lg:block text-white">Apply</span>
+                  <span className=" text-white">Apply</span>
                 </button>
               </ul>
             </div>
@@ -282,21 +283,29 @@ const Products = () => {
       {/* ************************************all product shown****************************************************************** */}
       <div className="border border-2 border-gray-400"></div>
       {/* ****************all product shown********************************************* */}
-      <div className=" px-8 mt-5  w-full h-full my-10">
-        <div className="flex flex-wrap justify-center align-middle gap-5   ">
-          {displayedProducts.length === 0 ? (
-            <p>sorry</p>
-          ) : (
-            displayedProducts.map((product: any) => (
-              <ProductsSingleView
-                key={product._id}
-                product={product}
-              ></ProductsSingleView>
-            ))
-          )}
+      <motion.div
+        // whileHover={{ scale: 1.05 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 2 }}
+        // className="text-center"
+      >
+        <div className=" px-8 mt-5  w-full h-full my-10">
+          <div className="flex flex-wrap justify-center align-middle gap-5   ">
+            {displayedProducts.length === 0 ? (
+              <p>sorry</p>
+            ) : (
+              displayedProducts.map((product: any) => (
+                <ProductsSingleView
+                  key={product._id}
+                  product={product}
+                ></ProductsSingleView>
+              ))
+            )}
+          </div>
+          {/* *********************** */}
         </div>
-        {/* *********************** */}
-      </div>
+      </motion.div>
       {/* ****************all product shown********************************************* */}
     </div>
   );
