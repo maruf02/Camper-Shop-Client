@@ -75,7 +75,7 @@ const Products = () => {
     setSelectedPriceAscDesc("");
     setDisplayedProducts(productsData?.data || []); // Reset to initial product list
   };
-  const categories = ["Shoes", "Bags", "Toy"];
+  const categories = ["Monitor", "Motherboard", "Processor", "RAM", "HDD"];
   if (isLoading)
     return (
       <div className="text-center py-5">

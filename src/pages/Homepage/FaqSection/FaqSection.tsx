@@ -59,7 +59,7 @@ const FaqSection = () => {
                 </p>
               </div>
             </div>
-            <div className="collapse collapse-arrow bg-[#1A4870]">
+            <div className="collapse collapse-arrow bg-[#1A4870] my-1">
               <input type="radio" name="my-accordion-2" />
               <div className="collapse-title text-xl font-medium">
                 2. How can I track my order?
@@ -75,7 +75,7 @@ const FaqSection = () => {
                 </p>
               </div>
             </div>
-            <div className="collapse collapse-arrow bg-[#1A4870]">
+            <div className="collapse collapse-arrow bg-[#1A4870] my-1">
               <input type="radio" name="my-accordion-2" />
               <div className="collapse-title text-xl font-medium">
                 3. What is your return policy?
@@ -91,7 +91,7 @@ const FaqSection = () => {
                 </p>
               </div>
             </div>
-            <div className="collapse collapse-arrow bg-[#1A4870]">
+            <div className="collapse collapse-arrow bg-[#1A4870] my-1">
               <input type="radio" name="my-accordion-2" />
               <div className="collapse-title text-xl font-medium">
                 4. Do you offer international shipping?
@@ -106,7 +106,7 @@ const FaqSection = () => {
                 </p>
               </div>
             </div>
-            <div className="collapse collapse-arrow bg-[#1A4870]">
+            <div className="collapse collapse-arrow bg-[#1A4870] my-1">
               <input type="radio" name="my-accordion-2" />
               <div className="collapse-title text-xl font-medium">
                 5. How can I contact customer support?
@@ -121,7 +121,7 @@ const FaqSection = () => {
                 </p>
               </div>
             </div>
-            <div className="collapse collapse-arrow bg-[#1A4870]">
+            <div className="collapse collapse-arrow bg-[#1A4870] my-1">
               <input type="radio" name="my-accordion-2" />
               <div className="collapse-title text-xl font-medium">
                 6. Are there any warranties on your products?
@@ -136,7 +136,7 @@ const FaqSection = () => {
                 </p>
               </div>
             </div>
-            <div className="collapse collapse-arrow bg-[#1A4870]">
+            <div className="collapse collapse-arrow bg-[#1A4870] my-1">
               <input type="radio" name="my-accordion-2" />
               <div className="collapse-title text-xl font-medium">
                 7. Can I cancel or modify my order?

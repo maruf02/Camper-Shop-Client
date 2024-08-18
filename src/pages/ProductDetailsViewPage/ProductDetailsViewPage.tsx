@@ -38,21 +38,27 @@ const ProductDetailsViewPage = () => {
   const isOutOfStock = product.quantity === 0;
   // const existingProduct = savedProducts.find((p) => p._id === product._id);
   const isAddToCartDisabled = isOutOfStock || requiredQty > product.quantity;
-
+  const images = [
+    product.Mimages,
+    product.images2,
+    product.images3,
+    product.images4,
+    product.images5,
+  ];
   return (
-    <div className="my-10 min-h-screen md:min-h-full">
+    <div className="my-10 h-full lg:h-[700px] min-h-screen md:min-h-full">
       {/* <h2>ProductDetailsViewPage:{product.Mimages}</h2> */}
       <div className="text-3xl text-black font-semibold underline text-center pb-8 md:pb-14">
         See your Product in details:
       </div>
       <div className="flex flex-col lg:flex-row  w-11/12   mx-auto h-full gap-10">
         {/* left side portion */}
-        <div className="w-full md:w-full h-96 flex justify-center  ">
-          <SideBySideMagnifier imageUrl={product.Mimages} />
+        <div className="w-full md:w-full h-full flex justify-center  ">
+          <SideBySideMagnifier images={images} />
         </div>
         {/* left side portion */}
         {/* Right side portion */}
-        <div className="w-full md:w-4/6 h-96  flex flex-col justify-between">
+        <div className="w-full md:w-4/6 h-fit  flex flex-col justify-between">
           <div>
             <h1 className="text-2xl text-black font-semibold">
               {product.name}

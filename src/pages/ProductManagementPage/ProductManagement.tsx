@@ -30,7 +30,7 @@ const ProductManagement = () => {
 
   console.log(products);
 
-  const categories = ["Monitor", "Motherboard", "Processor", "Ram", "Hdd"];
+  const categories = ["Monitor", "Motherboard", "Processor", "RAM", "HDD"];
   const handleAddProduct = async (event: React.FormEvent) => {
     event.preventDefault();
     // Extract form data

@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "react";
 
 interface MagnifierProps {
-  imageUrl: string;
+  images: string[]; // Array of image URLs, where the first image is the main image
 }
 
-const SideBySideMagnifier: React.FC<MagnifierProps> = ({ imageUrl }) => {
+const SideBySideMagnifier: React.FC<MagnifierProps> = ({ images }) => {
+  const [currentImage, setCurrentImage] = useState(images[0]);
   const [backgroundPosition, setBackgroundPosition] = useState("0% 0%");
   const [isZoomVisible, setIsZoomVisible] = useState(false);
   const magnifierRef = useRef<HTMLDivElement>(null);
@@ -26,31 +27,48 @@ const SideBySideMagnifier: React.FC<MagnifierProps> = ({ imageUrl }) => {
     setIsZoomVisible(false);
   };
 
+  const handleThumbnailClick = (imageUrl: string) => {
+    setCurrentImage(imageUrl);
+  };
+
   return (
-    <div className="relative flex border border-gray-300">
-      <div
-        ref={magnifierRef}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        className="relative w-full h-full overflow-hidden border-r border-gray-300 "
-      >
-        <img
-          src={imageUrl}
-          alt="Product"
-          className="w-full h-full object-cover pointer-events-none "
+    <div className="flex flex-col lg:flex-row items-center lg:items-start">
+      <div className="lg:mr-4 lg:flex lg:flex-col lg:space-y-2 lg:order-1 order-2 flex space-x-2 lg:space-x-0 overflow-x-auto lg:overflow-x-visible lg:mt-0 mt-4">
+        {images.map((imageUrl, index) => (
+          <img
+            key={index}
+            src={imageUrl}
+            alt={`Thumbnail ${index}`}
+            className="w-12 h-12 md:w-12 md:h-12 object-cover cursor-pointer border border-gray-300 rounded"
+            onClick={() => handleThumbnailClick(imageUrl)}
+          />
+        ))}
+      </div>
+      <div className="relative flex border border-gray-300 order-1 lg:order-2">
+        <div
+          ref={magnifierRef}
+          onMouseMove={handleMouseMove}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className="relative w-full h-[300px] md:h-[500px] lg:h-[500px] overflow-hidden border-r border-gray-300"
+        >
+          <img
+            src={currentImage}
+            alt="Product"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div
+          className={`absolute left-full top-0 w-3/4 h-full bg-no-repeat bg-cover z-10 ${
+            isZoomVisible ? "block" : "hidden"
+          }`}
+          style={{
+            backgroundImage: `url(${currentImage})`,
+            backgroundPosition: backgroundPosition,
+            backgroundSize: "300%",
+          }}
         />
       </div>
-      <div
-        className={`absolute left-[30%] top-[100%] w-[300px] h-[300px] bg-no-repeat bg-cover z-10 ${
-          isZoomVisible ? "block" : "hidden"
-        }`}
-        style={{
-          backgroundImage: `url(${imageUrl})`,
-          backgroundPosition: backgroundPosition,
-          backgroundSize: "300%",
-        }}
-      />
     </div>
   );
 };
