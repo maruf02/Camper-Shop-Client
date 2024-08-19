@@ -6,8 +6,10 @@ import { MdManageSearch, MdPriceCheck } from "react-icons/md";
 import { useGetAllProductsQuery } from "../../redux/api/api";
 import ProductsSingleView from "../ProductsSingleView/ProductsSingleView";
 import { motion } from "framer-motion";
+import useReloadWarning from "../../redux/useReloadWarning";
 
 const Products = () => {
+  useReloadWarning();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedPriceAscDesc, setSelectedPriceAscDesc] = useState("");
   const [searchText, setSearchText] = useState("");
@@ -34,7 +36,7 @@ const Products = () => {
     const filteredProducts = products.filter(
       (product) =>
         product.name.toLowerCase().includes(searchText) ||
-        product.category.toLowerCase().includes(searchText)
+        product.description.toLowerCase().includes(searchText)
     );
     setDisplayedProducts(filteredProducts);
   };
@@ -45,7 +47,10 @@ const Products = () => {
     const maxPrice = parseFloat(event.target.MaxPrice.value) || Infinity;
 
     const filteredProducts = products.filter(
-      (product) => product.price >= minPrice && product.price <= maxPrice
+      (product) =>
+        product.price >= minPrice &&
+        product.price <= maxPrice &&
+        (!selectedCategory || product.category === selectedCategory)
     );
     setDisplayedProducts(filteredProducts);
   };
@@ -257,7 +262,9 @@ const Products = () => {
                 onChange={handleSelectChangePriceAscDesc}
                 className="select select-bordered w-full bg-[#1A4870]"
               >
-                <option disabled>Select Option</option>
+                <option disabled selected>
+                  Select Option
+                </option>
                 <option value="asc">Price Low to High</option>
                 <option value="desc">Price High to Low</option>
               </select>
@@ -312,3 +319,288 @@ const Products = () => {
 };
 
 export default Products;
+
+// --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+
+// import React, { useState } from "react";
+// import { AiOutlineBarChart } from "react-icons/ai";
+// import { FaSearch, FaSortNumericDown } from "react-icons/fa";
+// import { IoMdClose } from "react-icons/io";
+// import { MdManageSearch, MdPriceCheck } from "react-icons/md";
+// import { useGetAllProductsQuery } from "../../redux/api/api";
+// import ProductsSingleView from "../ProductsSingleView/ProductsSingleView";
+// import { motion } from "framer-motion";
+
+// const Products = () => {
+//   const [selectedCategory, setSelectedCategory] = useState("");
+//   const [selectedPriceAscDesc, setSelectedPriceAscDesc] = useState("");
+//   const [searchText, setSearchText] = useState("");
+//   const [products, setProducts] = useState([]);
+//   const [displayedProducts, setDisplayedProducts] = useState([]);
+
+//   // redux part
+//   const {
+//     data: productsData,
+//     isError,
+//     isLoading,
+//   } = useGetAllProductsQuery(undefined);
+
+//   // Load products data initially
+//   React.useEffect(() => {
+//     if (productsData) {
+//       setProducts(productsData.data);
+//       setDisplayedProducts(productsData.data);
+//     }
+//   }, [productsData]);
+
+//   const handleSearch = (event) => {
+//     event.preventDefault();
+//     const searchText = event.target.SearchText.value.toLowerCase();
+//     setSearchText(searchText);
+
+//     const filteredProducts = products.filter(
+//       (product) =>
+//         product.name.toLowerCase().includes(searchText) ||
+//         product.description.toLowerCase().includes(searchText)
+//     );
+//     setDisplayedProducts(filteredProducts);
+//   };
+
+//   const handleSortByPriceRange = (event) => {
+//     event.preventDefault();
+//     const minPrice = parseFloat(event.target.MinPrice.value) || 0;
+//     const maxPrice = parseFloat(event.target.MaxPrice.value) || Infinity;
+
+//     const filteredProducts = products.filter(
+//       (product) =>
+//         product.price >= minPrice &&
+//         product.price <= maxPrice &&
+//         (!selectedCategory || product.category === selectedCategory)
+//     );
+//     setDisplayedProducts(filteredProducts);
+//   };
+
+//   const handleSelectChangeCategory = (event) => {
+//     const selectedValue = event.target.value;
+//     setSelectedCategory(selectedValue);
+
+//     const filteredProducts = products.filter(
+//       (product) => product.category === selectedValue
+//     );
+//     setDisplayedProducts(filteredProducts);
+//   };
+
+//   const handleSelectChangePriceAscDesc = (event) => {
+//     const selectedValue = event.target.value;
+//     setSelectedPriceAscDesc(selectedValue);
+
+//     const sortedProducts = [...displayedProducts].sort((a, b) =>
+//       selectedValue === "asc" ? a.price - b.price : b.price - a.price
+//     );
+//     setDisplayedProducts(sortedProducts);
+//   };
+
+//   const handleReset = () => {
+//     setSearchText("");
+//     setSelectedCategory("");
+//     setSelectedPriceAscDesc("");
+//     setDisplayedProducts(productsData?.data || []); // Reset to initial product list
+//   };
+
+//   const categories = ["Monitor", "Motherboard", "Processor", "RAM", "HDD"];
+
+//   if (isLoading)
+//     return (
+//       <div className="text-center py-5">
+//         <span className="loading loading-spinner loading-lg"></span>
+//       </div>
+//     );
+//   if (isError) return <div>Error loading products</div>;
+
+//   return (
+//     <div className="w-full h-full min-h-screen">
+//       {/* Product welcome banner section */}
+//       <div
+//         className="hero h-32"
+//         style={{
+//           backgroundImage:
+//             "url(https://i.postimg.cc/tgj1Lp4Q/pexels-pixabay-531880.jpg)",
+//         }}
+//       >
+//         <div className="hero-overlay bg-opacity-40"></div>
+//         <div className="hero-content text-neutral-content text-center">
+//           <div className="max-w-lg">
+//             <h1 className="mb-5 text-3xl font-bold text-white">
+//               Buy your Suitable Product & Enjoy
+//             </h1>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* title bar section */}
+//       <div className="navbar mt-2  flex flex-col md:flex-row gap-2 flex-wrap">
+//         <div className="flex-1 ">
+//           <a className=" text-4xl font-bold underline pl-3">ALL PRODUCTS: </a>
+//         </div>
+//         <div className="flex-none gap-2">
+//           <form onSubmit={handleSearch}>
+//             <div className="dropdown dropdown-bottom text-white dropdown-hover lg:hidden">
+//               <div
+//                 tabIndex={0}
+//                 role="button"
+//                 className="btn  btn-sm bg-[#1A4870]"
+//               >
+//                 <FaSearch className=" text-xl text-[#F9DBBA]" />
+//               </div>
+//               <ul
+//                 tabIndex={0}
+//                 className="dropdown-content menu border-[#1F316F]  bg-[#1A4870] rounded-box z-[1] w-auto p-2 shadow"
+//               >
+//                 <input
+//                   type="text"
+//                   name="SearchText"
+//                   placeholder="Search By Name/Category"
+//                   className="input input-bordered input-primary w-72 max-w-md bg-inherit text-white"
+//                 />
+//                 <button className="btn btn-sm bg-[#1A4870] text-white mt-2 ">
+//                   Search
+//                 </button>
+//               </ul>
+//             </div>
+//           </form>
+
+//           <form onSubmit={handleSearch}>
+//             <div className="hidden lg:block">
+//               <label className="input flex items-center gap-2 bg-[#1A4870] w-auto h-auto">
+//                 <FaSearch className=" text-xl text-[#F9DBBA]" />
+//                 <input
+//                   type="text"
+//                   name="SearchText"
+//                   className="input input-sm input-bordered input-[#1A4870] w-60 max-w-md   text-white"
+//                   placeholder="Search By Name/Category"
+//                 />
+//                 <button className="btn btn-sm bg-[#1A4870] text-white ">
+//                   Search
+//                 </button>
+//               </label>
+//             </div>
+//           </form>
+
+//           <form onSubmit={handleSortByPriceRange}>
+//             <div className="dropdown md:dropdown-end  text-white dropdown-hover ">
+//               <div
+//                 tabIndex={0}
+//                 role="button"
+//                 className="btn btn-sm bg-[#1A4870]"
+//               >
+//                 <span className="hidden lg:block text-white">
+//                   Filter By Price Range
+//                 </span>
+//                 <MdPriceCheck className=" text-3xl text-[#F9DBBA]" />
+//               </div>
+//               <ul
+//                 tabIndex={0}
+//                 className="dropdown-content menu  border-2 border-[#1F316F]  bg-[#1A4870] rounded-box z-[1] w-auto p-2 shadow"
+//               >
+//                 <div className="flex    items-baseline ">
+//                   <label className="pr-5 text-md">MinPrice:</label>
+//                   <input
+//                     type="number"
+//                     name="MinPrice"
+//                     placeholder="Type here"
+//                     className="input input-bordered input-primary  input-sm w-24 max-w-xs text-white bg-inherit"
+//                   />
+//                 </div>
+//                 <div className="flex items-baseline mt-2 ">
+//                   <label className="pr-5 text-md">MaxPrice:</label>
+//                   <input
+//                     type="number"
+//                     name="MaxPrice"
+//                     placeholder="Type here"
+//                     className="input input-bordered input-primary  input-sm w-24 max-w-xs text-white bg-inherit"
+//                   />
+//                 </div>
+//                 <button className="btn btn-sm bg-[#1A4870] text-white  h-2 mt-2">
+//                   <span className=" text-white">Apply</span>
+//                 </button>
+//               </ul>
+//             </div>
+//           </form>
+
+//           <div className="dropdown dropdown-bottom dropdown-end text-white dropdown-hover">
+//             <div tabIndex={0} role="button" className="btn btn-sm bg-[#1A4870]">
+//               <span className="hidden lg:block text-white">
+//                 Filter By Category
+//               </span>
+//               <MdManageSearch className=" text-3xl text-[#F9DBBA]" />
+//             </div>
+//             <ul
+//               tabIndex={0}
+//               className="dropdown-content menu border-[#1F316F]  bg-[#1A4870] rounded-box z-[1] w-52 p-2 shadow"
+//             >
+//               <select
+//                 onChange={handleSelectChangeCategory}
+//                 className="select select-bordered w-full  bg-[#1A4870] "
+//               >
+//                 <option disabled selected>
+//                   Select Category
+//                 </option>
+//                 {categories.map((category, index) => (
+//                   <option key={index} value={category}>
+//                     {category}
+//                   </option>
+//                 ))}
+//               </select>
+//             </ul>
+//           </div>
+
+//           <div className="dropdown dropdown-bottom dropdown-end text-white dropdown-hover">
+//             <div
+//               tabIndex={0}
+//               role="button"
+//               className="btn btn-sm bg-[#1A4870] hover:cursor-pointer"
+//             >
+//               <span className="hidden lg:block text-white">
+//                 Sort By Price Asc/Desc
+//               </span>
+//               <FaSortNumericDown className=" text-xl text-[#F9DBBA]" />
+//             </div>
+//             <ul
+//               tabIndex={0}
+//               className="dropdown-content menu border-[#1F316F]  bg-[#1A4870] rounded-box z-[1] w-52 p-2 shadow"
+//             >
+//               <select
+//                 onChange={handleSelectChangePriceAscDesc}
+//                 className="select select-bordered w-full  bg-[#1A4870] "
+//               >
+//                 <option disabled selected>
+//                   Select
+//                 </option>
+//                 <option value="asc">Price Low to High</option>
+//                 <option value="desc">Price High to Low</option>
+//               </select>
+//             </ul>
+//           </div>
+
+//           <div className="text-white">
+//             <IoMdClose
+//               onClick={handleReset}
+//               className="bg-[#1A4870] p-1 text-4xl cursor-pointer"
+//             />
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Products container */}
+//       <div className="products-container m-2 p-5 flex flex-wrap justify-center items-center gap-3">
+//         {displayedProducts.map((product) => (
+//           <ProductsSingleView key={product._id} product={product} />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Products;

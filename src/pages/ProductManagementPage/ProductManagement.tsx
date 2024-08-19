@@ -9,13 +9,18 @@ import {
 } from "../../redux/api/api";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import StarRatings from "react-star-ratings";
+import useReloadWarning from "../../redux/useReloadWarning";
 
 const ProductManagement = () => {
+  useReloadWarning();
   const [selectedProductId, setSelectedProductId] = useState<string | null>(
     null
   );
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [rating, setRating] = useState(0);
+
   const {
     data: productsData,
     refetch,
@@ -44,7 +49,7 @@ const ProductManagement = () => {
     const category = selectedCategory;
     const price = parseInt(form.price.value);
     const quantity = parseInt(form.quantity.value);
-    const ratings = parseInt(form.rating.value);
+
     const description = form.description.value;
 
     const productData = {
@@ -57,7 +62,7 @@ const ProductManagement = () => {
       category,
       price,
       quantity,
-      ratings,
+      ratings: rating,
       description,
     };
     console.log("productData", productData);
@@ -115,7 +120,7 @@ const ProductManagement = () => {
     const category = selectedCategory;
     const price = form.price.value;
     const quantity = form.quantity.value;
-    const rating = form.rating.value;
+    // const rating = form.rating.value;
     const description = form.description.value;
 
     const productModifyData = {
@@ -128,7 +133,7 @@ const ProductManagement = () => {
       category,
       price,
       quantity,
-      rating,
+      ratings: rating,
       description,
     };
     console.log("Product ID:", selectedProductId);
@@ -328,13 +333,23 @@ const ProductManagement = () => {
 
                 <div>
                   <label className="pr-12 text-white">Ratings:</label>
-                  <input
+                  {/* <input
                     type="number"
                     name="rating"
                     max="5"
                     min="1"
                     placeholder="Enter rating here"
                     className="input input-bordered input-primary w-full max-w-xs bg-inherit text-white"
+                  /> */}
+                  <StarRatings
+                    rating={rating}
+                    starRatedColor="#f39c12"
+                    starHoverColor="#f39c12"
+                    changeRating={setRating}
+                    numberOfStars={5}
+                    starDimension="30px"
+                    starSpacing="2px"
+                    name="rating"
                   />
                 </div>
                 <div className="flex flex-row align-middle">
@@ -478,7 +493,7 @@ const ProductManagement = () => {
 
                 <div>
                   <label className="pr-12 text-white">Ratings:</label>
-                  <input
+                  {/* <input
                     type="number"
                     name="rating"
                     max="5"
@@ -486,6 +501,16 @@ const ProductManagement = () => {
                     defaultValue={selectedProduct?.ratings}
                     placeholder="Enter rating here"
                     className="input input-bordered input-primary w-full max-w-xs bg-inherit text-white"
+                  /> */}
+                  <StarRatings
+                    rating={selectedProduct?.ratings}
+                    starRatedColor="#f39c12"
+                    starHoverColor="#f39c12"
+                    changeRating={setRating}
+                    numberOfStars={5}
+                    starDimension="30px"
+                    starSpacing="2px"
+                    name="rating"
                   />
                 </div>
                 <div className="flex flex-row align-middle">
@@ -527,9 +552,9 @@ const ProductManagement = () => {
             ) : (
               products.map((product: any) => (
                 <>
-                  <tr>
+                  <tr className="hover:bg-gray-300">
                     <td>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 ">
                         <div className="avatar">
                           <div className="mask mask-squircle h-12 w-12">
                             <img

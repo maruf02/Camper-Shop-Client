@@ -2,18 +2,30 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetProductByIdQuery } from "../../redux/api/api";
 import SideBySideMagnifier from "../ImageMagnifier/SideBySideMagnifier";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../redux/productSlice";
 
 import StarRatings from "react-star-ratings";
 import Swal from "sweetalert2";
+import { RootState } from "../../redux/store";
+import useReloadWarning from "../../redux/useReloadWarning";
 // Import Swiper React components
 
 const ProductDetailsViewPage = () => {
+  useReloadWarning();
   const [requiredQty, setRequiredQty] = useState(1);
   const { id } = useParams<{ id: string }>();
   const { data: productsData, isLoading, isError } = useGetProductByIdQuery(id);
   const dispatch = useDispatch();
+
+  // --------------------
+  const savedProducts = useSelector(
+    (state: RootState) => state.product.savedProducts
+  );
+
+  console.log("savedProducts", savedProducts);
+
+  // --------------------
 
   const product = productsData?.data || [];
   console.log(product);
@@ -26,7 +38,9 @@ const ProductDetailsViewPage = () => {
 
   const handleProductIdLocalStorage = () => {
     const productToAdd = { ...product, requiredQty };
+    console.log("productToAdd", productToAdd);
     dispatch(addProduct(productToAdd));
+    setRequiredQty(1);
     Swal.fire({
       title: "Success!",
       text: "Product added to cart successfully.",
@@ -34,10 +48,25 @@ const ProductDetailsViewPage = () => {
       confirmButtonText: "OK",
     });
   };
+  // logic-> when user give input that time check his previous save data(requireQty)+present(RequireQty) === product Qty
+  const currentProduct = savedProducts.find((p) => p._id === product._id);
+  const totalRequiredQty =
+    (currentProduct ? currentProduct.requiredQty : 0) + requiredQty;
+  if (totalRequiredQty > product.quantity) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Your Choose quantity exceed out Stock Quantity",
+    });
+  }
 
   const isOutOfStock = product.quantity === 0;
   // const existingProduct = savedProducts.find((p) => p._id === product._id);
-  const isAddToCartDisabled = isOutOfStock || requiredQty > product.quantity;
+  const isAddToCartDisabled =
+    isOutOfStock ||
+    requiredQty > product.quantity ||
+    totalRequiredQty > product.quantity;
+
   const images = [
     product.Mimages,
     product.images2,
@@ -58,10 +87,13 @@ const ProductDetailsViewPage = () => {
         </div>
         {/* left side portion */}
         {/* Right side portion */}
-        <div className="w-full md:w-4/6 h-fit  flex flex-col justify-between">
+        <div className="w-full lg:w-4/6 h-fit  flex flex-col justify-between">
           <div>
             <h1 className="text-2xl text-black font-semibold">
               {product.name}
+            </h1>
+            <h1 className="text-2xl font-semibold">
+              Price: <span className="text-red-500">${product.price}</span>
             </h1>
             <h1>
               rating:
@@ -84,7 +116,7 @@ const ProductDetailsViewPage = () => {
                 value={requiredQty}
                 onChange={handleQtyChange}
                 disabled={isOutOfStock}
-                min="0"
+                min="1"
                 max={product.quantity}
                 placeholder="QTY"
                 className="input input-bordered input-primary  input-sm w-16 max-w-xs text-black text-lg font-semibold bg-inherit "
@@ -104,10 +136,10 @@ const ProductDetailsViewPage = () => {
             <p className="broder border-2 border-gray-300 my-2"></p>
             <h1>Description:{product.description}</h1>
           </div>
-          <div className="flex justify-center  ">
+          <div className="flex justify-center ">
             <button
               onClick={handleProductIdLocalStorage}
-              className="btn btn-primary mt-4 my-5"
+              className="btn btn-primary mt-4 my-5 w-2/4 mt-5"
               disabled={isAddToCartDisabled}
             >
               {isAddToCartDisabled ? (
@@ -116,6 +148,7 @@ const ProductDetailsViewPage = () => {
                 "Add to Cart"
               )}
             </button>
+            <br />
           </div>
         </div>
         {/* Right side portion */}

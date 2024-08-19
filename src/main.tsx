@@ -41,10 +41,7 @@ const router = createBrowserRouter([
         path: "/cartView",
         element: <CartViewPage></CartViewPage>,
       },
-      {
-        path: "/cart",
-        element: <PageWithUnloadWarning></PageWithUnloadWarning>,
-      },
+
       {
         path: "/checkOut",
         element: <CheckOutPage></CheckOutPage>,

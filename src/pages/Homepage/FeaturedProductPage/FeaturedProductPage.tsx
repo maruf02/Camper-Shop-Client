@@ -112,49 +112,51 @@ const FeaturedProductPage = () => {
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
                       >
-                        <div className="card glass w-80">
-                          <figure>
-                            <img
-                              src={product.Mimages}
-                              alt="car!"
-                              className="w-80 h-60"
-                            />
-                          </figure>
-                          <div className=" my-5 ">
-                            <div className="space-y-0 pl-5">
-                              <div className="badge badge-outline">
-                                {product.category}
-                              </div>
-                              <h2 className="card-title m-0 py-2 text-2xl w-full h-20">
-                                {product.name}
-                              </h2>
-                              <p className="m-0 text-md">
-                                QTY: {product.quantity}pcs
-                              </p>
-                              <div className="flex justify-between align-middle pr-5 pb-3">
+                        <Link to={`/ProductDetailsView/${product._id}`}>
+                          <div className="card glass w-80">
+                            <figure>
+                              <img
+                                src={product.Mimages}
+                                alt="car!"
+                                className="w-80 h-60"
+                              />
+                            </figure>
+                            <div className=" my-5 ">
+                              <div className="space-y-0 pl-5">
+                                <div className="badge badge-outline">
+                                  {product.category}
+                                </div>
+                                <h2 className="card-title m-0 py-2 text-2xl w-full h-20">
+                                  {product.name}
+                                </h2>
                                 <p className="m-0 text-md">
-                                  Price: {product.price}
+                                  QTY: {product.quantity}pcs
                                 </p>
+                                <div className="flex justify-between align-middle pr-5 pb-3">
+                                  <p className="m-0 text-md">
+                                    Price: {product.price}
+                                  </p>
 
-                                <StarRatings
-                                  rating={product.ratings}
-                                  starRatedColor="#f39c12"
-                                  numberOfStars={5}
-                                  name="rating"
-                                  starDimension="18px"
-                                  starSpacing="1px"
-                                />
+                                  <StarRatings
+                                    rating={product.ratings}
+                                    starRatedColor="#f39c12"
+                                    numberOfStars={5}
+                                    name="rating"
+                                    starDimension="18px"
+                                    starSpacing="1px"
+                                  />
+                                </div>
                               </div>
+                              <Link to={`/ProductDetailsView/${product._id}`}>
+                                <div className="card-actions   mt-3 ">
+                                  <button className="btn btn-primary w-full ">
+                                    View Details
+                                  </button>
+                                </div>
+                              </Link>
                             </div>
-                            <Link to={`/ProductDetailsView/${product._id}`}>
-                              <div className="card-actions   mt-3 ">
-                                <button className="btn btn-primary w-full ">
-                                  View Details
-                                </button>
-                              </div>
-                            </Link>
                           </div>
-                        </div>
+                        </Link>
                       </motion.div>
                     </SwiperSlide>
                   ))}

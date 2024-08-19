@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { clearOrderData } from "../../redux/placeOrderSlice";
-import { useCreateOrderItemMutation } from "../../redux/api/api";
+import {
+  useCreateOrderItemMutation,
+  useGetAllProductsQuery,
+} from "../../redux/api/api";
 import { clearProducts } from "../../redux/productSlice";
 import Swal from "sweetalert2";
 import useReloadWarning from "../../redux/useReloadWarning";
@@ -16,7 +19,7 @@ const CheckOutPage = () => {
     (state: RootState) => state.placeOrder.orderData
   );
   const [createOrderItem] = useCreateOrderItemMutation();
-
+  const { refetch } = useGetAllProductsQuery(undefined);
   const totalItems = orderData?.totalItems ?? 0;
   const items = orderData?.items ?? [];
   const totalPrice = orderData?.totalPrice ?? 0;
@@ -53,15 +56,24 @@ const CheckOutPage = () => {
       const response = await createOrderItem(orderItem).unwrap();
       console.log("Order created successfully", response);
       Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Your work has been saved",
-        showConfirmButton: false,
-        timer: 1500,
+        title: `Hey ${email}. Your purchase is Success. Wait for your Product. Thanks`,
+        width: 600,
+        padding: "3em",
+        color: "#716add",
+        background: "#fff url(/images/trees.png)",
+        backdrop: `
+    rgba(0,0,123,0.4)
+    url("/images/nyan-cat.gif")
+    left top
+    no-repeat
+  `,
+        allowOutsideClick: false, // Disable closing by clicking outside
+        confirmButtonText: "OK", // Text for the confirm button
       });
 
       dispatch(clearOrderData());
       dispatch(clearProducts());
+      refetch();
       navigate("/");
     } catch (error) {
       console.error("Failed to create order", error);

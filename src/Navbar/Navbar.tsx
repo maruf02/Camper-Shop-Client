@@ -73,14 +73,16 @@ const Navbar = () => {
               {menu}
             </ul>
           </div>
-          <div className="flex flex-row items-center gap-2">
-            <img
-              src="https://i.postimg.cc/sDKNspNc/creative-computer-logo-template-23-2149213537.jpg"
-              alt=""
-              className="w-14 h-14 rounded-2xl"
-            />
-            <p className=" text-2xl font-bold text-[#F9DBBA] ">CampheRex</p>
-          </div>
+          <NavLink to="/">
+            <div className="flex flex-row items-center gap-2">
+              <img
+                src="https://i.postimg.cc/sDKNspNc/creative-computer-logo-template-23-2149213537.jpg"
+                alt=""
+                className="w-14 h-14 rounded-2xl"
+              />
+              <p className=" text-2xl font-bold text-[#F9DBBA] ">CampheRex</p>
+            </div>
+          </NavLink>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{menu}</ul>
