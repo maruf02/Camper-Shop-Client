@@ -1,30 +1,71 @@
-# React + TypeScript + Vite
+# Camper Shop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Introduction
 
-Currently, two official plugins are available:
+This is camper shop project. this is a little type of e-commerce type project. this project very small but you can get vibe of little e-commerce, React, Redux.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Description
 
-## Expanding the ESLint configuration
+This is camper shop project. this is a little type of e-commerce type project. this project very small but you can get vibe of little e-commerce, React, Redux. The purpose of this project create a vibe of fast performance os state that manage in Redux
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Features
 
-- Configure the top-level `parserOptions` property like this:
+- Best selling product
+- featured product
+- testimonial that are review of customer
+- list of all product
+- search by text that search work for product tittle and description. so you can get accurate result.
+- you can sort product by your price range
+- you can sort your product but category wise
+- you can sort product price high to low also low to high
+- you can add your product to cart for saving
+- you can order your product for purchase
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+## Technology Stack
+
+- Frontent:
+  - React
+  - Redux,
+  - TypeScript
+  - tailwind Css
+  - Daisy UI
+  - swiper Slider & many more
+- Backend:
+  - Node js
+  - Express js
+  - mongoDB
+  - mongoose DB
+
+## Installation Guideline
+
+Instructions on how to install, configure, and get the project running locally.
+
+### Prerequisites
+
+- Download and Node.js LTS version in locally in your machine
+- vs code or any code editor that your preference
+
+### Installation Steps
+
+1. Clone this git repo
+2. Open this project into your editor run this command
+
+```tsc
+code .
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+3. then run this command, this command install all needed things
+
+```tsc
+npm i
+```
+
+4. then run this command
+
+```tsc
+npm run dev
+```
+
+5. Enjoy the project
+
+## Thanks For your Valuable time.
