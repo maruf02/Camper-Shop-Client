@@ -28,7 +28,7 @@ const CheckOutPage = () => {
   const handleCheckOut = async (event: React.FormEvent) => {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
-    const name = form.name.value;
+    const name = form.nameT.value;
     const email = form.email.value;
     const phone = form.phone.value;
     const address = form.address.value;
@@ -53,8 +53,9 @@ const CheckOutPage = () => {
     // });
 
     try {
-      const response = await createOrderItem(orderItem).unwrap();
-      console.log("Order created successfully", response);
+      // const response =
+      await createOrderItem(orderItem).unwrap();
+      // console.log("Order created successfully", response);
       Swal.fire({
         title: `Hey ${email}. Your purchase is Success. Wait for your Product. Thanks`,
         width: 600,
@@ -76,7 +77,7 @@ const CheckOutPage = () => {
       refetch();
       navigate("/");
     } catch (error) {
-      console.error("Failed to create order", error);
+      // console.error("Failed to create order", error);
     }
   };
 
@@ -114,7 +115,7 @@ const CheckOutPage = () => {
               <label className="pr-5">Name:</label>
               <input
                 type="text"
-                name="name"
+                name="nameT"
                 placeholder="Enter your name"
                 id="name"
                 required

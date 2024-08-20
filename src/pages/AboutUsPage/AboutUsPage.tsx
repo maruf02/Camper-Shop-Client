@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import {
   FaPhoneAlt,
   FaEnvelope,
@@ -9,6 +9,7 @@ import {
   FaLinkedin,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Virtual, Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -99,19 +100,21 @@ const teamMembers = [
 
 const AboutUsPage = () => {
   useReloadWarning();
-  const swiperRef = useRef(null);
+  // const swiperRef = useRef(null);
+  const swiperRef = useRef<SwiperType | null>(null);
 
   const handleMouseEnter = () => {
-    if (swiperRef.current && swiperRef.current.swiper) {
-      swiperRef.current.swiper.autoplay.stop();
+    if (swiperRef.current && swiperRef.current.autoplay) {
+      swiperRef.current.autoplay.stop();
     }
   };
 
   const handleMouseLeave = () => {
-    if (swiperRef.current && swiperRef.current.swiper) {
-      swiperRef.current.swiper.autoplay.start();
+    if (swiperRef.current && swiperRef.current.autoplay) {
+      swiperRef.current.autoplay.start();
     }
   };
+
   return (
     <div className="min-h-screen bg-gray-200 text-gray-800">
       <header className="text-center py-12 bg-gradient-to-r from-blue-500 to-purple-600 text-white">
@@ -256,7 +259,10 @@ const AboutUsPage = () => {
           >
             <h2 className="text-3xl font-semibold mb-6">Meet Our Team</h2>
             <Swiper
-              ref={swiperRef}
+              // ref={swiperRef}
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper;
+              }}
               direction="horizontal"
               slidesPerView={1}
               breakpoints={{
@@ -273,7 +279,7 @@ const AboutUsPage = () => {
                   slidesPerView: 4,
                 },
                 1536: {
-                  slidesPerView: 5, // For screens 1536px and up
+                  slidesPerView: 5,
                 },
               }}
               spaceBetween={10}

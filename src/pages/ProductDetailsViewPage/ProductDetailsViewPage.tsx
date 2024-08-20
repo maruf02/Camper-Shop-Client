@@ -9,13 +9,16 @@ import StarRatings from "react-star-ratings";
 import Swal from "sweetalert2";
 import { RootState } from "../../redux/store";
 import useReloadWarning from "../../redux/useReloadWarning";
-// Import Swiper React components
 
-const ProductDetailsViewPage = () => {
+const ProductDetailsViewPage: React.FC = () => {
   useReloadWarning();
   const [requiredQty, setRequiredQty] = useState(1);
   const { id } = useParams<{ id: string }>();
-  const { data: productsData, isLoading, isError } = useGetProductByIdQuery(id);
+  const {
+    data: productsData,
+    isLoading,
+    isError,
+  } = useGetProductByIdQuery(id as string);
   const dispatch = useDispatch();
 
   // --------------------
@@ -23,12 +26,12 @@ const ProductDetailsViewPage = () => {
     (state: RootState) => state.product.savedProducts
   );
 
-  console.log("savedProducts", savedProducts);
+  // console.log("savedProducts", savedProducts);
 
   // --------------------
 
   const product = productsData?.data || [];
-  console.log(product);
+  // console.log(product);
   if (isLoading) return <div>Loading...</div>;
   if (isError || !product) return <div>Error loading product</div>;
 
@@ -38,7 +41,7 @@ const ProductDetailsViewPage = () => {
 
   const handleProductIdLocalStorage = () => {
     const productToAdd = { ...product, requiredQty };
-    console.log("productToAdd", productToAdd);
+    // console.log("productToAdd", productToAdd);
     dispatch(addProduct(productToAdd));
     setRequiredQty(1);
     Swal.fire({

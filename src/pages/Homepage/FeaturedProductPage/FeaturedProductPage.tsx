@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { useGetAllProductsQuery } from "../../../redux/api/api";
 import { motion } from "framer-motion";
+import { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Virtual, Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -10,20 +11,35 @@ import "swiper/css/pagination";
 import StarRatings from "react-star-ratings";
 import { Link, NavLink } from "react-router-dom";
 
-const FeaturedProductPage = () => {
-  const swiperRef = useRef(null);
+// Define the type for product
+interface Product {
+  _id: string;
+  Mimages: string;
+  name: string;
+  quantity: number;
+  price: number;
+  ratings: number;
+  category: string;
+}
 
-  const { data: productsData, isError, isLoading } = useGetAllProductsQuery();
+const FeaturedProductPage = () => {
+  const swiperRef = useRef<SwiperType | null>(null);
+
+  const {
+    data: productsData,
+    isError,
+    isLoading,
+  } = useGetAllProductsQuery(undefined);
 
   const handleMouseEnter = () => {
-    if (swiperRef.current?.swiper) {
-      swiperRef.current.swiper.autoplay.stop();
+    if (swiperRef.current && swiperRef.current.autoplay) {
+      swiperRef.current.autoplay.stop();
     }
   };
 
   const handleMouseLeave = () => {
-    if (swiperRef.current?.swiper) {
-      swiperRef.current.swiper.autoplay.start();
+    if (swiperRef.current && swiperRef.current.autoplay) {
+      swiperRef.current.autoplay.start();
     }
   };
 
@@ -39,16 +55,16 @@ const FeaturedProductPage = () => {
     return <div>Error loading products</div>;
   }
 
-  const getRandomProducts = (products) => {
+  const getRandomProducts = (products: Product[]) => {
     const shuffled = [...products].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 8);
   };
 
-  const randomProducts = getRandomProducts(productsData.data);
+  const randomProducts = getRandomProducts(productsData?.data || []);
 
   return (
     <div>
-      <div className="w-full h-full  my-5">
+      <div className="w-full h-full my-5">
         {/* title section */}
         <div className="flex flex-row justify-between py-5">
           <h1 className="text-xl md:text-3xl text-black font-bold">
@@ -61,7 +77,7 @@ const FeaturedProductPage = () => {
             </button>
           </NavLink>
         </div>
-        <div className="border border-2 border-gray-400 "></div>
+        <div className="border border-2 border-gray-400"></div>
         {/* product view section */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -74,7 +90,10 @@ const FeaturedProductPage = () => {
                 <p>Sorry, no products available</p>
               ) : (
                 <Swiper
-                  ref={swiperRef}
+                  // ref={swiperRef}
+                  onSwiper={(swiper) => {
+                    swiperRef.current = swiper;
+                  }}
                   direction="horizontal"
                   slidesPerView={1}
                   breakpoints={{
@@ -91,7 +110,7 @@ const FeaturedProductPage = () => {
                       slidesPerView: 4,
                     },
                     1536: {
-                      slidesPerView: 5, // For screens 1536px and up
+                      slidesPerView: 5,
                     },
                   }}
                   spaceBetween={10}
@@ -104,11 +123,10 @@ const FeaturedProductPage = () => {
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-                  {randomProducts.map((product: any) => (
+                  {randomProducts.map((product) => (
                     <SwiperSlide key={product._id}>
                       <motion.div
                         whileHover={{ scale: 1.05 }}
-                        // className="bg-white rounded-lg shadow-lg p-6 mx-auto w-full sm:w-3/4"
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
                       >
@@ -117,11 +135,11 @@ const FeaturedProductPage = () => {
                             <figure>
                               <img
                                 src={product.Mimages}
-                                alt="car!"
+                                alt={product.name}
                                 className="w-80 h-60"
                               />
                             </figure>
-                            <div className=" my-5 ">
+                            <div className="my-5">
                               <div className="space-y-0 pl-5">
                                 <div className="badge badge-outline">
                                   {product.category}
@@ -136,7 +154,6 @@ const FeaturedProductPage = () => {
                                   <p className="m-0 text-md">
                                     Price: {product.price}
                                   </p>
-
                                   <StarRatings
                                     rating={product.ratings}
                                     starRatedColor="#f39c12"
@@ -148,8 +165,8 @@ const FeaturedProductPage = () => {
                                 </div>
                               </div>
                               <Link to={`/ProductDetailsView/${product._id}`}>
-                                <div className="card-actions   mt-3 ">
-                                  <button className="btn btn-primary w-full ">
+                                <div className="card-actions mt-3">
+                                  <button className="btn btn-primary w-full">
                                     View Details
                                   </button>
                                 </div>

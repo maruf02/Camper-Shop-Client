@@ -1,15 +1,20 @@
 import "./App.css";
-import { useGetProductsQuery } from "./redux/api/api";
+import { useGetAllProductsQuery } from "./redux/api/api";
 
 function App() {
-  const { data: products, isLoading, isError } = useGetProductsQuery(undefined);
+  const {
+    data: products,
+    isLoading,
+    isError,
+  } = useGetAllProductsQuery(undefined);
   if (isError) {
-    console.log("is error loading");
+    // console.log("is error loading");
   }
   if (isLoading) {
-    console.log("loding");
+    // console.log("loding");
+    <p>{products}</p>;
   }
-  console.log(products.data);
+  // console.log(products.data);
   return (
     <div>
       <h1>Camper Shop</h1>

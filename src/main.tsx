@@ -12,7 +12,7 @@ import ProductDetailsViewPage from "./pages/ProductDetailsViewPage/ProductDetail
 import CartViewPage from "./pages/CartViewPage/CartViewPage.tsx";
 import CheckOutPage from "./pages/CheckOutPage/CheckOutPage.tsx";
 import ProductManagement from "./pages/ProductManagementPage/ProductManagement.tsx";
-import PageWithUnloadWarning from "./PageWithUnloadWarning/PageWithUnloadWarning.tsx";
+
 import AboutUsPage from "./pages/AboutUsPage/AboutUsPage.tsx";
 
 const router = createBrowserRouter([

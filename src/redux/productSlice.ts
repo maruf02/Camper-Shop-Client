@@ -8,7 +8,7 @@ interface Product {
   category: string;
   quantity: number;
   ratings: number;
-  images: string[];
+  Mimages: string;
   requiredQty: number;
 }
 

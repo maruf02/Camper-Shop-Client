@@ -8,6 +8,17 @@ import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import useReloadWarning from "../../redux/useReloadWarning";
 
+// interface Product {
+//   _id: string;
+//   name: string;
+//   price: number;
+//   quantity: number;
+//   requiredQty: number;
+//   category: string;
+//   ratings: number;
+//   Mimages: string;
+// }
+
 const CartViewPage = () => {
   useReloadWarning();
   const dispatch = useDispatch();
@@ -16,9 +27,11 @@ const CartViewPage = () => {
     (state: RootState) => state.product.savedProducts
   );
   const [cartItems, setCartItems] = useState(savedProducts);
+
   const [totalPrice, setTotalPrice] = useState(0);
   const [isPlaceOrderDisabled, setIsPlaceOrderDisabled] = useState(false);
 
+  // console.log("cartItems", cartItems);
   useEffect(() => {
     calculateTotalPrice();
     checkIfExceedsStock();
@@ -141,7 +154,7 @@ const CartViewPage = () => {
                   >
                     <div className="w-36 h-full rounded-md">
                       <img
-                        src={product.Mimages} // Assuming the first image is the primary one
+                        src={product.Mimages}
                         alt={product.name}
                         className="w-full h-full rounded-lg"
                       />

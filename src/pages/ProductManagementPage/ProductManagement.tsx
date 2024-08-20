@@ -19,28 +19,23 @@ const ProductManagement = () => {
   );
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(selectedProduct?.ratings || 0);
 
-  const {
-    data: productsData,
-    refetch,
-    isError,
-    isLoading,
-  } = useGetAllProductsQuery(undefined);
+  const { data: productsData, refetch } = useGetAllProductsQuery(undefined);
   const [addProductItem, {}] = useAddProductItemMutation();
 
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
   const products = productsData?.data || [];
 
-  console.log(products);
+  // console.log(products);
 
   const categories = ["Monitor", "Motherboard", "Processor", "RAM", "HDD"];
   const handleAddProduct = async (event: React.FormEvent) => {
     event.preventDefault();
     // Extract form data
     const form = event.target as HTMLFormElement;
-    const name = form.name.value;
+    const name = form.nameT.value;
     const Mimages = form.Mimage.value;
     const images2 = form.image2.value;
     const images3 = form.image3.value;
@@ -65,12 +60,12 @@ const ProductManagement = () => {
       ratings: rating,
       description,
     };
-    console.log("productData", productData);
+    // console.log("productData", productData);
 
     try {
       // Call the addProduct mutation
-      const response = await addProductItem(productData).unwrap();
-      console.log("Product added:", response);
+      await addProductItem(productData).unwrap();
+      // console.log("Product added:", response);
       Swal.fire({
         position: "top-end",
         icon: "success",
@@ -88,7 +83,7 @@ const ProductManagement = () => {
       }
       refetch();
     } catch (error) {
-      console.error("Failed to add product:", error);
+      // console.error("Failed to add product:", error);
     }
   };
 
@@ -111,7 +106,8 @@ const ProductManagement = () => {
     event.preventDefault();
 
     const form = event.target as HTMLFormElement;
-    const name = form.name.value;
+
+    const name = form.nameT.value;
     const Mimages = form.Mimage.value;
     const images2 = form.image2.value;
     const images3 = form.image3.value;
@@ -136,19 +132,19 @@ const ProductManagement = () => {
       ratings: rating,
       description,
     };
-    console.log("Product ID:", selectedProductId);
-    console.log("Product Data:", productModifyData);
-    // Log the data to console
-    console.log("Product ID:", selectedProductId);
-    console.log("Product Data:", productModifyData);
+    // console.log("Product ID:", selectedProductId);
+    // console.log("Product Data:", productModifyData);
+    // // Log the data to console
+    // console.log("Product ID:", selectedProductId);
+    // console.log("Product Data:", productModifyData);
 
     try {
       // Call the updateProduct mutation
-      const response = await updateProduct({
+      await updateProduct({
         productId: selectedProductId,
         productModifyData,
       });
-      console.log("Product updated:", response);
+      // console.log("Product updated:", response);
       Swal.fire({
         position: "top-end",
         icon: "success",
@@ -166,15 +162,16 @@ const ProductManagement = () => {
       }
       refetch();
     } catch (error) {
-      console.error("Failed to update product:", error);
+      // console.error("Failed to update product:", error);
     }
   };
-  const handleSelectChangeCategory = (event) => {
-    const selectedValue = event.target.value;
+  const handleSelectChangeCategory = (event: React.FormEvent) => {
+    const form = event.target as HTMLFormElement;
+    const selectedValue = form.value;
     setSelectedCategory(selectedValue);
   };
 
-  console.log(selectedProductId);
+  // console.log(selectedProductId);
 
   const handleDeleteProduct = (productId: string) => {
     Swal.fire({
@@ -192,7 +189,7 @@ const ProductManagement = () => {
           Swal.fire("Deleted!", "Your product has been deleted.", "success");
           refetch();
         } catch (error) {
-          console.error("Failed to delete product:", error);
+          // console.error("Failed to delete product:", error);
           Swal.fire(
             "Error!",
             "There was an issue deleting the product.",
@@ -228,7 +225,6 @@ const ProductManagement = () => {
         <dialog id="AddProductModal" className="modal  ">
           <div className="modal-box bg-[#1A4870]  ">
             <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
               <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
                 ✕
               </button>
@@ -243,7 +239,7 @@ const ProductManagement = () => {
                   <label className="pr-12 text-white">Name:</label>
                   <input
                     type="text"
-                    name="name"
+                    name="nameT"
                     placeholder="Enter Product name"
                     className="input input-bordered input-primary w-full max-w-xs bg-inherit text-white"
                   />
@@ -297,7 +293,7 @@ const ProductManagement = () => {
                   <label className="pr-8 text-white">Category:</label>
                   <select
                     onChange={handleSelectChangeCategory}
-                    value={selectedCategory || ""} // Handle the case where selectedCategory is initially undefined
+                    value={selectedCategory || ""}
                     className="select select-bordered w-full max-w-xs bg-[#1A4870] text-white"
                   >
                     <option value="" disabled>
@@ -373,7 +369,6 @@ const ProductManagement = () => {
         <dialog id="editProductModal" className="modal">
           <div className="modal-box bg-[#1A4870]">
             <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
               <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
                 ✕
               </button>
@@ -395,7 +390,7 @@ const ProductManagement = () => {
                   <label className="pr-12 text-white">Name:</label>
                   <input
                     type="text"
-                    name="name"
+                    name="nameT"
                     defaultValue={selectedProduct?.name}
                     placeholder="Enter Product name"
                     className="input input-bordered input-primary w-full max-w-xs bg-inherit text-white"
@@ -455,7 +450,7 @@ const ProductManagement = () => {
                   <label className="pr-8 text-white">Category:</label>
                   <select
                     onChange={handleSelectChangeCategory}
-                    value={selectedCategory || ""} // Handle the case where selectedCategory is initially undefined
+                    value={selectedCategory || ""}
                     className="select select-bordered w-full max-w-xs bg-[#1A4870] text-white"
                   >
                     <option value="" disabled>
@@ -503,7 +498,8 @@ const ProductManagement = () => {
                     className="input input-bordered input-primary w-full max-w-xs bg-inherit text-white"
                   /> */}
                   <StarRatings
-                    rating={selectedProduct?.ratings}
+                    // rating={selectedProduct?.ratings}
+                    rating={rating}
                     starRatedColor="#f39c12"
                     starHoverColor="#f39c12"
                     changeRating={setRating}

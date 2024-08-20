@@ -1,9 +1,6 @@
-import React, { useState } from "react";
-import { FaRegHeart } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { RootState } from "../redux/store";
-import { useGetAllProductsQuery } from "../redux/api/api";
 import { MdManageAccounts } from "react-icons/md";
 
 const Navbar = () => {
@@ -16,8 +13,8 @@ const Navbar = () => {
     (sum, item) => sum + item.price * item.requiredQty,
     0
   );
-  console.log("objectPrice", total);
-  console.log("object", savedProducts.length);
+  // console.log("objectPrice", total);
+  // console.log("object", savedProducts.length);
 
   // redux part for cart
   const menu = (

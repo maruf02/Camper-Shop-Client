@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 
 interface MagnifierProps {
-  images: string[]; // Array of image URLs, where the first image is the main image
+  images: string[];
 }
 
 const SideBySideMagnifier: React.FC<MagnifierProps> = ({ images }) => {

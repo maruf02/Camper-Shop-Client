@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Virtual, Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -89,17 +90,17 @@ const teamMembers = [
 ];
 
 const TestimonialSection = () => {
-  const swiperRef = useRef(null);
+  const swiperRef = useRef<SwiperType | null>(null);
 
   const handleMouseEnter = () => {
-    if (swiperRef.current && swiperRef.current.swiper) {
-      swiperRef.current.swiper.autoplay.stop();
+    if (swiperRef.current && swiperRef.current.autoplay) {
+      swiperRef.current.autoplay.stop();
     }
   };
 
   const handleMouseLeave = () => {
-    if (swiperRef.current && swiperRef.current.swiper) {
-      swiperRef.current.swiper.autoplay.start();
+    if (swiperRef.current && swiperRef.current.autoplay) {
+      swiperRef.current.autoplay.start();
     }
   };
   return (
@@ -115,7 +116,10 @@ const TestimonialSection = () => {
             What Client say About Us
           </h2>
           <Swiper
-            ref={swiperRef}
+            // ref={swiperRef}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+            }}
             direction="horizontal"
             slidesPerView={1}
             breakpoints={{
@@ -132,7 +136,7 @@ const TestimonialSection = () => {
                 slidesPerView: 4,
               },
               1536: {
-                slidesPerView: 5, // For screens 1536px and up
+                slidesPerView: 5,
               },
             }}
             spaceBetween={10}

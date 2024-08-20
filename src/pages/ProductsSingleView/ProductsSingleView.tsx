@@ -1,7 +1,20 @@
 import StarRatings from "react-star-ratings";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-const ProductsSingleView = ({ product }) => {
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  category: string;
+  quantity: number;
+  ratings: number;
+  Mimages: string;
+}
+
+interface ProductsSingleViewProps {
+  product: Product;
+}
+const ProductsSingleView: React.FC<ProductsSingleViewProps> = ({ product }) => {
   const { _id, name, price, category, quantity, ratings, Mimages } = product;
 
   return (
